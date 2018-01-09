@@ -17,21 +17,7 @@ import javax.swing.ImageIcon;
  *
  * @author isayan
  */
-public class MatchItem {
-
-    /**
-     * @return the regexp
-     */
-    public boolean isRegexp() {
-        return this.regexp;
-    }
-
-    /**
-     * @param regexp the regexp to set
-     */
-    public void setRegexp(boolean regexp) {
-        this.regexp = regexp;
-    }
+public class MatchItem extends RegexItem {
 
     public enum TargetTool {
 
@@ -163,11 +149,7 @@ public class MatchItem {
     };
     private boolean selected = true;
     private String type;
-    private boolean regexp = true;
-    private boolean ignoreCase = false;
     private boolean format = false;
-    private String match = "";
-    private Pattern regex;
 
     /**
      * @return the selected
@@ -195,61 +177,6 @@ public class MatchItem {
      */
     public void setType(String type) {
         this.type = type;
-    }
-
-    /**
-     * @return the ignoreCase
-     */
-    public boolean isIgnoreCase() {
-        return this.ignoreCase;
-    }
-
-    /**
-     * @param ignoreCase the ignoreCase to set
-     */
-    public void setIgnoreCase(boolean ignoreCase) {
-        this.ignoreCase = ignoreCase;
-        this.compileRegex(false);
-    }
-
-    /**
-     * @return the match
-     */
-    public String getMatch() {
-        return this.match;
-    }
-
-    /**
-     * @param match the match to set
-     */
-    public void setMatch(String match) {
-        this.match = match;
-        this.regex = compileRegex(false);
-    }
-    
-    public Pattern compileRegex(boolean quote) {
-        int flags = Pattern.MULTILINE;
-        Pattern newregex;
-        if (this.ignoreCase) {
-            flags |= Pattern.CASE_INSENSITIVE;
-        }
-        if (quote) {
-            newregex = Pattern.compile(Pattern.quote(this.match), flags);
-        } else {
-            newregex = Pattern.compile(this.match, flags);
-        }
-        return newregex;
-    }
-
-    public void recompileRegex(boolean quote) {
-       this.regex = compileRegex(quote);
-    }
-
-    /**
-     * @return the regex
-     */
-    public Pattern getRegexPattern() {
-        return this.regex;
     }
     
     private String replace = "";

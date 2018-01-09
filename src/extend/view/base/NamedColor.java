@@ -50,7 +50,5 @@ public class NamedColor extends Color implements Comparable<NamedColor> {
             return Util.compareToString(name, o.name);
         }
     }
-    
-    
-    
+        
 }

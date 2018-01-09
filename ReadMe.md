@@ -13,5 +13,10 @@ release フォルダの BurpExtlib.jar をJavaのライブラリとしてイン�
 * HTTP Request、HTTP Response を扱うのに便利なラッパー
 
 # 対応バージョン
-* Burp suite v1.7.28
+* Burp suite v1.7.29
+
+# 開発環境
+
+* NetBean 8.2(http://netbeans.org/)
+* Apache ant 1.9(http://ant.apache.org/)
 
