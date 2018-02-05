@@ -7,6 +7,7 @@ package burp;
 
 import burp.IBurpExtender;
 import burp.IBurpExtenderCallbacks;
+import extend.util.BurpWrap;
 import extend.util.Util;
 import java.awt.TrayIcon;
 import java.io.IOException;
@@ -26,6 +27,7 @@ public class BurpExtenderImpl implements IBurpExtender {
     public void registerExtenderCallbacks(IBurpExtenderCallbacks cb) {
         extenderImpl = this;
         callbacks = cb;
+        BurpWrap.assained(cb);
         return;
     }
     

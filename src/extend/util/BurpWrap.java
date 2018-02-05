@@ -284,12 +284,17 @@ public class BurpWrap {
         }
 
         public boolean isFreeVersion() {
-            return (0 <= this.productName.indexOf("Free"));
+            return !this.isProfessional();
         }
 
         public boolean isExtendSupport() {
             return ((this.getMajorVersion() == 16) && (this.getMinorVersion() > 0)) || ((this.getMajorVersion() > 0));
         }
+
+        public boolean isProfessional() {
+            return (0 <= this.productName.indexOf("Professional"));
+        }
+
 
     }
 
@@ -357,8 +362,60 @@ public class BurpWrap {
         
         @Override
         public IHttpRequestResponse call() throws Exception {
-            IHttpRequestResponse message = callbacks.makeHttpRequest(httpService, request);
-            return message;
+            if (callbacks != null) {
+                IHttpRequestResponse message = callbacks.makeHttpRequest(httpService, request);            
+                return message;            
+            }
+            else {
+                return new IHttpRequestResponse() {
+                    @Override
+                    public byte[] getRequest() {
+                        return request;
+                    }
+
+                    @Override
+                    public void setRequest(byte[] message) {
+                    }
+
+                    @Override
+                    public byte[] getResponse() {
+                        byte [] response = Util.getRawByte("HTTP/1.1 404\r\nContent-Type: text/html; charset=UTF-8");
+                        return response;
+                    }
+
+                    @Override
+                    public void setResponse(byte[] message) {
+                    }
+
+                    @Override
+                    public String getComment() {
+                        return "";
+                    }
+
+                    @Override
+                    public void setComment(String comment) {
+                    }
+
+                    @Override
+                    public String getHighlight() {
+                        return null;
+                    }
+
+                    @Override
+                    public void setHighlight(String color) {
+                    }
+
+                    @Override
+                    public IHttpService getHttpService() {
+                        return httpService;
+                    }
+
+                    @Override
+                    public void setHttpService(IHttpService httpService) {
+                    }
+                
+                };
+            }
         }
 
     }
