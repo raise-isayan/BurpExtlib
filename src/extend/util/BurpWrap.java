@@ -16,6 +16,8 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -317,22 +319,24 @@ public class BurpWrap {
         buff.append(")$");
         return buff.toString();
     }
-
-    public static IHttpRequestResponse syncRequest(IHttpService httpService, byte[] request) {
-        FutureTask<IHttpRequestResponse> task = new FutureTask(new TestRequest(httpService, request));
-        IHttpRequestResponse message = null;
-        try {
-            message = task.get();
-        } catch (ExecutionException ex) {
-            Logger.getLogger(BurpWrap.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(BurpWrap.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return message;
+    
+    public static IHttpRequestResponse syncRequest(IHttpService httpService, byte[] request) throws ExecutionException {
+        return syncRequest(new TestRequest(httpService, request));
     }
 
+    public static IHttpRequestResponse syncRequest(TestRequest testRequest) throws ExecutionException {
+        try {
+            final ExecutorService executor = Executors.newSingleThreadExecutor();
+            FutureTask<IHttpRequestResponse> task = new FutureTask(testRequest);
+            executor.submit(task);
+            IHttpRequestResponse message = task.get();        
+            return message;
+        } catch (InterruptedException ex) {
+            throw new ExecutionException(ex);
+        }
+    }
+    
     public static class TestRequest implements Callable<IHttpRequestResponse> {
-
         private IHttpService httpService = null;
         private byte[] request = new byte[0];
 
@@ -363,59 +367,10 @@ public class BurpWrap {
         @Override
         public IHttpRequestResponse call() throws Exception {
             if (callbacks != null) {
-                IHttpRequestResponse message = callbacks.makeHttpRequest(httpService, request);            
+                IHttpRequestResponse message = callbacks.makeHttpRequest(this.httpService, this.request);            
                 return message;            
             }
-            else {
-                return new IHttpRequestResponse() {
-                    @Override
-                    public byte[] getRequest() {
-                        return request;
-                    }
-
-                    @Override
-                    public void setRequest(byte[] message) {
-                    }
-
-                    @Override
-                    public byte[] getResponse() {
-                        byte [] response = Util.getRawByte("HTTP/1.1 404\r\nContent-Type: text/html; charset=UTF-8");
-                        return response;
-                    }
-
-                    @Override
-                    public void setResponse(byte[] message) {
-                    }
-
-                    @Override
-                    public String getComment() {
-                        return "";
-                    }
-
-                    @Override
-                    public void setComment(String comment) {
-                    }
-
-                    @Override
-                    public String getHighlight() {
-                        return null;
-                    }
-
-                    @Override
-                    public void setHighlight(String color) {
-                    }
-
-                    @Override
-                    public IHttpService getHttpService() {
-                        return httpService;
-                    }
-
-                    @Override
-                    public void setHttpService(IHttpService httpService) {
-                    }
-                
-                };
-            }
+            return null;
         }
 
     }
