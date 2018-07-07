@@ -22,12 +22,14 @@ import java.util.logging.Logger;
 public class BurpExtenderImpl implements IBurpExtender {
     private static BurpExtenderImpl extenderImpl;
     private static IBurpExtenderCallbacks callbacks;
-
+    private BurpVersion burp_version = null;
+    
     @Override
     public void registerExtenderCallbacks(IBurpExtenderCallbacks cb) {
         extenderImpl = this;
         callbacks = cb;
         BurpWrap.assained(cb);
+        burp_version = new BurpWrap.Version(cb);
         return;
     }
     
@@ -52,6 +54,10 @@ public class BurpExtenderImpl implements IBurpExtender {
         } else {
             return null;
         }
+    }
+    
+    public BurpVersion getVersion () {
+        return burp_version;
     }
     
     public static void outPrintln(String message) throws IOException {

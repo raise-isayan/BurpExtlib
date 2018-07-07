@@ -5,6 +5,7 @@
  */
 package extend.util;
 
+import burp.BurpVersion;
 import burp.IBurpExtenderCallbacks;
 import burp.IContextMenuInvocation;
 import burp.IExtensionHelpers;
@@ -243,7 +244,7 @@ public class BurpWrap {
         return Arrays.copyOfRange(content, resInfo.getBodyOffset(), content.length);
     }
 
-    public final static class Version {
+    public final static class Version implements BurpVersion {
 
         private final IBurpExtenderCallbacks callbacks;
         private String productName = "";
