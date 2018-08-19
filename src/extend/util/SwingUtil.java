@@ -240,7 +240,7 @@ public final class SwingUtil {
             }
         }
     }
-
+    
     private static Toolkit toolkit = Toolkit.getDefaultToolkit();
 
     public static String systemSelection() {

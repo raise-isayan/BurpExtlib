@@ -5,21 +5,44 @@
  */
 package burp;
 
-import burp.IBurpExtender;
-import burp.IBurpExtenderCallbacks;
 import extend.util.BurpWrap;
 import extend.util.Util;
 import java.awt.TrayIcon;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
  * @author t.isayama
  */
 public class BurpExtenderImpl implements IBurpExtender {
+
+    public static enum Severity {
+        HIGH, MEDIUM, LOW, INFORMATION, FALSE_POSITIVE;    
+
+        @Override
+        public String toString() {
+            char ch[] = name().toLowerCase().toCharArray();
+            if (ch.length > 0) ch[0] = Character.toUpperCase(ch[0]);
+            String value =  new String(ch);
+            return value.replace('_', ' ');
+        }
+
+    };
+
+    public static enum Confidence {
+        CERTAIN, FIRM, TENTATIVE;
+
+        @Override
+        public String toString() {
+            char ch[] = name().toLowerCase().toCharArray();
+            if (ch.length > 0) ch[0] = Character.toUpperCase(ch[0]);
+            String value =  new String(ch);
+            return value.replace('_', ' ');
+        }
+        
+    }
+
     private static BurpExtenderImpl extenderImpl;
     private static IBurpExtenderCallbacks callbacks;
     private BurpVersion burp_version = null;
@@ -56,7 +79,7 @@ public class BurpExtenderImpl implements IBurpExtender {
         }
     }
     
-    public BurpVersion getVersion () {
+    public BurpVersion getBurpVersion () {
         return burp_version;
     }
     

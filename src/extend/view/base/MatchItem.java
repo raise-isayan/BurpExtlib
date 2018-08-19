@@ -52,7 +52,7 @@ public class MatchItem extends RegexItem {
 
     public enum NotifyType {
 
-        ALERTS_TAB, TRAY_MESSAGE, ITEM_HIGHLIGHT, COMMENT;
+        ALERTS_TAB, TRAY_MESSAGE, ITEM_HIGHLIGHT, COMMENT, SCANNER;
 
         public static NotifyType parseValue(String value) {            
             NotifyType eval = (NotifyType) Util.parseEnumValue(NotifyType.class, value);

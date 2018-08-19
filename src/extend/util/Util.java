@@ -6,6 +6,7 @@ package extend.util;
 
 import java.io.*;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.charset.UnsupportedCharsetException;
 import java.security.SecureRandom;
 import java.text.MessageFormat;
@@ -139,26 +140,16 @@ public final class Util {
      * @return バイト列
      */
     public static byte[] getRawByte(String message) {
-        byte[] encodeByte = null;
-        try {
-            encodeByte = message.getBytes("8859_1");
-        } catch (UnsupportedEncodingException ex) {
-        }
-        return encodeByte;
+        return message.getBytes(StandardCharsets.ISO_8859_1);
     }
 
     public static String getRawStr(byte[] message) {
-        String decodeStr = null;
-        try {
-            decodeStr = new String(message, "8859_1");
-        } catch (UnsupportedEncodingException ex) {
-        }
-        return decodeStr;
+        return  new String(message, StandardCharsets.ISO_8859_1);
     }
 
     public static String getRawByteStr(String message, String encoding) throws UnsupportedEncodingException {
         byte[] encodeByte = message.getBytes(encoding);
-        return new String(encodeByte, "8859_1");
+        return new String(encodeByte, StandardCharsets.ISO_8859_1);
     }
 
     public static String appendFirstSeparator(String path, String separator) {
