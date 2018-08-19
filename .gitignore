@@ -1,4 +1,6 @@
 /nbproject/private
 /build
 /dist
+*.md5
+*.sha1
 *.zip
