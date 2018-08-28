@@ -7,7 +7,6 @@ package extend.model.base;
 
 import java.util.Enumeration;
 import javax.swing.JTree;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;

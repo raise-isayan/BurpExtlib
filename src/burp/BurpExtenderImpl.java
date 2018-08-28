@@ -13,7 +13,7 @@ import java.io.OutputStream;
 
 /**
  *
- * @author t.isayama
+ * @author isayan
  */
 public class BurpExtenderImpl implements IBurpExtender {
 

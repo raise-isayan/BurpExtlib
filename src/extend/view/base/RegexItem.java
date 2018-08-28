@@ -59,7 +59,7 @@ public class RegexItem {
      */
     public void setIgnoreCase(boolean ignoreCase) {
         this.ignoreCase = ignoreCase;
-        this.compileRegex(false);
+        this.regex =this.compileRegex(false);
     }
 
     public Pattern compileRegex(boolean quote) {
