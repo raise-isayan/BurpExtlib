@@ -6,8 +6,6 @@ package extend.view.base;
 
 import extend.util.HttpUtil;
 import extend.util.Util;
-import java.nio.charset.Charset;
-import java.nio.charset.IllegalCharsetNameException;
 import java.text.ParseException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -133,7 +131,7 @@ public class HttpMessage {
     }
 
     public int getContentLength() {
-        int contentlen = 0;
+        int contentlen = -1;
         Matcher m = CONTENT_LENGTH.matcher(this.getHeader());
         if (m.find()) {
             contentlen = Util.parseIntDefault(m.group(2), 0);
@@ -196,14 +194,7 @@ public class HttpMessage {
     }
 
     protected static String normalizeCharset(String charsetName) {
-        try {
-            Charset charst = Charset.forName(charsetName);
-            return charst.name();
-        } catch (IllegalCharsetNameException ex) {
-            return null;
-        } catch (IllegalArgumentException ex) {
-            return null;
-        }
+        return HttpUtil.normalizeCharset(charsetName);
     }
 
     public static byte[] buildHttpMessage(byte[] headers, byte[] body) {

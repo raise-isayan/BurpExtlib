@@ -10,6 +10,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.charset.IllegalCharsetNameException;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -33,6 +35,7 @@ import javax.net.ssl.*;
  * @author isayan
  */
 public final class HttpUtil {
+
     public static String LINE_TERMINATE = "\r\n";
 
     private HttpUtil() {
@@ -162,9 +165,9 @@ public final class HttpUtil {
             Logger.getLogger(HttpUtil.class.getName()).log(Level.SEVERE, null, ex);
         } catch (KeyManagementException ex) {
             Logger.getLogger(HttpUtil.class.getName()).log(Level.SEVERE, null, ex);
-        }        
+        }
     }
-    
+
     public static void ignoreValidateCertification(
             SSLContext sslcontext) {
         try {
@@ -299,7 +302,7 @@ public final class HttpUtil {
             return new AbstractMap.SimpleEntry(s[0], s[1].trim());
         }
     }
-    
+
     private static final Pattern BASE_URI_CHANGE = Pattern.compile("(<head>)|(<body>|(<html>))", Pattern.CASE_INSENSITIVE);
 
     public static String changeBaseURI(String content, String topURL) {
@@ -529,5 +532,16 @@ public final class HttpUtil {
         }
         return -1;
     }
-    
+
+    public static String normalizeCharset(String charsetName) {
+        try {
+            Charset charst = Charset.forName(charsetName);
+            return charst.name();
+        } catch (IllegalCharsetNameException ex) {
+            return null;
+        } catch (IllegalArgumentException ex) {
+            return null;
+        }
+    }
+
 }

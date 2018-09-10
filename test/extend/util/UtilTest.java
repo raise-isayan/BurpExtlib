@@ -113,4 +113,14 @@ public class UtilTest {
         System.out.println("testString_1_3:" + rep1);
     }
     
+    @Test
+    public void testGetAvailableEncodingList() {
+        System.out.println("getAvailableEncodingList");
+        String[] list = Util.getAvailableEncodingList();
+        for (String l : list) {
+            System.out.println(l);
+        }
+    }
+            
+    
 }
