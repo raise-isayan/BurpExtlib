@@ -132,7 +132,7 @@ public final class Util {
         }
         return null;
     }
-    
+
     /**
      * 生のバイト文字列取得
      *
@@ -144,7 +144,7 @@ public final class Util {
     }
 
     public static String getRawStr(byte[] message) {
-        return  new String(message, StandardCharsets.ISO_8859_1);
+        return new String(message, StandardCharsets.ISO_8859_1);
     }
 
     public static String getRawByteStr(String message, String encoding) throws UnsupportedEncodingException {
@@ -248,7 +248,7 @@ public final class Util {
         return encodeByte;
     }
 
-    public static byte [] byteReplace(byte [] base, int startPos, int endPos, byte [] replace) {
+    public static byte[] byteReplace(byte[] base, int startPos, int endPos, byte[] replace) {
         ByteArrayOutputStream bstm = new ByteArrayOutputStream();
         try {
             bstm.write(Arrays.copyOfRange(base, 0, startPos));
@@ -258,7 +258,7 @@ public final class Util {
         }
         return bstm.toByteArray();
     }
-    
+
     /**
      * 文字列置換
      *
@@ -437,7 +437,7 @@ public final class Util {
             int len = 0;
             while ((len = fstm.read(buff)) > 0) {
                 bostm.write(buff, 0, len);
-            }        
+            }
         }
         return bostm.toByteArray();
     }
@@ -453,7 +453,18 @@ public final class Util {
         }
         return file;
     }
-    
+
+    /* InputStream.readAllBytes は JDK 9 からサポート */
+    public static byte[] readAllBytes(InputStream stream) throws IOException {
+        ByteArrayOutputStream bostm = new ByteArrayOutputStream();
+        byte[] buff = new byte[1024];
+        int len = 0;
+        while ((len = stream.read(buff)) > 0) {
+            bostm.write(buff, 0, len);
+        }
+        return bostm.toByteArray();
+    }
+
     private final static char[] NUM_CHARS = "1234567890".toCharArray();
     private final static char[] IDENT_CHARS
             = "_1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
@@ -497,6 +508,5 @@ public final class Util {
         }
         return null;
     }
-    
-    
+
 }
