@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package burp;
 
 import extend.util.BurpWrap;
@@ -16,32 +11,6 @@ import java.io.OutputStream;
  * @author isayan
  */
 public class BurpExtenderImpl implements IBurpExtender {
-
-    public static enum Severity {
-        HIGH, MEDIUM, LOW, INFORMATION, FALSE_POSITIVE;    
-
-        @Override
-        public String toString() {
-            char ch[] = name().toLowerCase().toCharArray();
-            if (ch.length > 0) ch[0] = Character.toUpperCase(ch[0]);
-            String value =  new String(ch);
-            return value.replace('_', ' ');
-        }
-
-    };
-
-    public static enum Confidence {
-        CERTAIN, FIRM, TENTATIVE;
-
-        @Override
-        public String toString() {
-            char ch[] = name().toLowerCase().toCharArray();
-            if (ch.length > 0) ch[0] = Character.toUpperCase(ch[0]);
-            String value =  new String(ch);
-            return value.replace('_', ' ');
-        }
-        
-    }
 
     private static BurpExtenderImpl extenderImpl;
     private static IBurpExtenderCallbacks callbacks;

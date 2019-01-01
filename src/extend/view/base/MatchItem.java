@@ -147,6 +147,33 @@ public class MatchItem extends RegexItem {
             return value.replace('_', ' ');
         }
     };
+
+    public static enum Severity {
+        HIGH, MEDIUM, LOW, INFORMATION, FALSE_POSITIVE;    
+
+        @Override
+        public String toString() {
+            char ch[] = name().toLowerCase().toCharArray();
+            if (ch.length > 0) ch[0] = Character.toUpperCase(ch[0]);
+            String value =  new String(ch);
+            return value.replace('_', ' ');
+        }
+
+    };
+
+    public static enum Confidence {
+        CERTAIN, FIRM, TENTATIVE;
+
+        @Override
+        public String toString() {
+            char ch[] = name().toLowerCase().toCharArray();
+            if (ch.length > 0) ch[0] = Character.toUpperCase(ch[0]);
+            String value =  new String(ch);
+            return value.replace('_', ' ');
+        }
+        
+    }
+
     private boolean selected = true;
     private String type;
 
