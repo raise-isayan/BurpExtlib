@@ -159,6 +159,11 @@ public class MatchItem extends RegexItem {
             return value.replace('_', ' ');
         }
 
+        public static Severity parseEnum(String s) {
+            String value = s.toUpperCase();
+            return Enum.valueOf(Severity.class, value);
+        }
+                
     };
 
     public static enum Confidence {
@@ -170,6 +175,11 @@ public class MatchItem extends RegexItem {
             if (ch.length > 0) ch[0] = Character.toUpperCase(ch[0]);
             String value =  new String(ch);
             return value.replace('_', ' ');
+        }
+
+        public static Confidence parseEnum(String s) {
+            String value = s.toUpperCase();
+            return Enum.valueOf(Confidence.class, value);
         }
         
     }

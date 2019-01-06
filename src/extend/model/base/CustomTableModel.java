@@ -1,5 +1,6 @@
 package extend.model.base;
 
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
@@ -108,4 +109,21 @@ public class CustomTableModel extends DefaultTableModel {
         }
         return editRows;
     }
+
+    public static String tableCopy(JTable table) {
+        StringBuffer buffer = new StringBuffer();
+        int numCols = table.getSelectedColumnCount();
+        int numRows = table.getSelectedRowCount();
+        int[] rowsSelected = table.getSelectedRows();
+        int[] colsSelected = table.getSelectedColumns();        
+        for(int i = 0; i < numRows; i++) {
+            for(int j = 0; j < numCols; j++) {
+                buffer.append(table.getValueAt(rowsSelected[i], colsSelected[j]));
+                if(j < numCols - 1) buffer.append("\t");
+            }
+            buffer.append(System.lineSeparator());
+        }
+        return buffer.toString();
+    }
+
 }

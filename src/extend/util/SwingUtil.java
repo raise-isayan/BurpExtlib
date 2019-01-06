@@ -63,26 +63,33 @@ public final class SwingUtil {
     public static void insertItem(javax.swing.JTable srcTable, Object[] items) {
         DefaultTableModel modelSrc = (DefaultTableModel) srcTable.getModel();
         int index = srcTable.getSelectedRow();
-        if (-1 < index && index < modelSrc.getRowCount()) {
-            modelSrc.insertRow(index, items);
+        if (-1 < index && index < srcTable.getRowCount()) {
+            int rowIndex = srcTable.convertRowIndexToModel(index);
+            modelSrc.insertRow(rowIndex, items);
         }
     }
 
-    public static void updateItem(javax.swing.JTable srcTable, Object[] items) {
+    public static void updateItem(javax.swing.JTable srcTable, Object[] items, int viewIndex) {
         DefaultTableModel modelSrc = (DefaultTableModel) srcTable.getModel();
-        int index = srcTable.getSelectedRow();
-        if (-1 < index && index < modelSrc.getRowCount()) {
-            modelSrc.removeRow(index);
-            modelSrc.insertRow(index, items);
-            srcTable.getSelectionModel().setSelectionInterval(index, index);
-        }
+        int index = viewIndex;
+        if (-1 < index && index < srcTable.getRowCount()) {
+            int rowIndex = srcTable.convertRowIndexToModel(index);
+            modelSrc.removeRow(rowIndex);
+            modelSrc.insertRow(rowIndex, items);
+            srcTable.getSelectionModel().setSelectionInterval(rowIndex, rowIndex);
+        }        
+    }
+
+    public static void updateItem(javax.swing.JTable srcTable, Object[] items) {
+        updateItem(srcTable, items, srcTable.getSelectedRow());
     }
 
     public static boolean removeItem(javax.swing.JTable srcTable) {
         DefaultTableModel modelSrc = (DefaultTableModel) srcTable.getModel();
         int index = srcTable.getSelectedRow();
         if (index > -1) {
-            modelSrc.removeRow(index);
+            int rowIndex = srcTable.convertRowIndexToModel(index);
+            modelSrc.removeRow(rowIndex);
             return true;
         }
         return false;
@@ -93,9 +100,10 @@ public final class SwingUtil {
         int index = srcTable.getSelectedRow();
         Object[] editRows = null;
         if (index > -1) {
+            int rowIndex = srcTable.convertRowIndexToModel(index);
             editRows = new Object[modelSrc.getColumnCount()];
             for (int i = 0; i < editRows.length; i++) {
-                editRows[i] = modelSrc.getValueAt(index, i);
+                editRows[i] = modelSrc.getValueAt(rowIndex, i);
             }
         }
         return editRows;
