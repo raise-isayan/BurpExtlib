@@ -455,7 +455,7 @@ public final class Util {
         ByteArrayOutputStream bostm = new ByteArrayOutputStream();
         byte[] buff = new byte[1024];
         int len = 0;
-        while ((len = stream.read(buff)) > 0) {
+        while ((len = stream.read(buff)) >= 0) {
             bostm.write(buff, 0, len);
         }
         return bostm.toByteArray();

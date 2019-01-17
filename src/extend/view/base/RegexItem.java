@@ -6,6 +6,7 @@
 package extend.view.base;
 
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 /**
  *
@@ -59,19 +60,26 @@ public class RegexItem {
      */
     public void setIgnoreCase(boolean ignoreCase) {
         this.ignoreCase = ignoreCase;
-        this.regex =this.compileRegex(false);
+        this.regex = this.compileRegex(false);
     }
 
+    public boolean isValidRegex() {
+        return this.compileRegex(false) != null;
+    }
+    
     public Pattern compileRegex(boolean quote) {
         int flags = Pattern.MULTILINE;
-        Pattern newregex;
-        if (this.ignoreCase) {
-            flags |= Pattern.CASE_INSENSITIVE;
-        }
-        if (quote) {
-            newregex = Pattern.compile(Pattern.quote(this.match), flags);
-        } else {
-            newregex = Pattern.compile(this.match, flags);
+        Pattern newregex = null;
+        try  {
+            if (this.ignoreCase) {
+                flags |= Pattern.CASE_INSENSITIVE;
+            }
+            if (quote) {
+                newregex = Pattern.compile(Pattern.quote(this.match), flags);
+            } else {
+                newregex = Pattern.compile(this.match, flags);
+            }
+        } catch (PatternSyntaxException ex) {
         }
         return newregex;
     }
@@ -85,6 +93,19 @@ public class RegexItem {
      */
     public Pattern getRegexPattern() {
         return this.regex;
+    }
+
+   public static Pattern compileRegex(String text, int flags, boolean quote) {
+        Pattern newregex = null;
+        try  {
+            if (quote) {
+                newregex = Pattern.compile(Pattern.quote(text), flags);
+            } else {
+                newregex = Pattern.compile(text, flags);
+            }
+        } catch (PatternSyntaxException ex) {
+        }
+        return newregex;
     }
     
 }
