@@ -112,14 +112,12 @@ public class CustomTableModel extends DefaultTableModel {
 
     public static String tableCopy(JTable table) {
         StringBuffer buffer = new StringBuffer();
-        int numCols = table.getSelectedColumnCount();
-        int numRows = table.getSelectedRowCount();
         int[] rowsSelected = table.getSelectedRows();
         int[] colsSelected = table.getSelectedColumns();        
-        for(int i = 0; i < numRows; i++) {
-            for(int j = 0; j < numCols; j++) {
+        for(int i = 0; i < rowsSelected.length; i++) {
+            for(int j = 0; j < colsSelected.length; j++) {
+                if(0 < j) buffer.append("\t");
                 buffer.append(table.getValueAt(rowsSelected[i], colsSelected[j]));
-                if(j < numCols - 1) buffer.append("\t");
             }
             buffer.append(System.lineSeparator());
         }
