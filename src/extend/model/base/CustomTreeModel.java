@@ -10,6 +10,7 @@ import javax.swing.tree.TreePath;
  *
  * @author isayan
  */
+@Deprecated
 public class CustomTreeModel extends DefaultTreeModel  {
     
     public CustomTreeModel(TreeNode root) {

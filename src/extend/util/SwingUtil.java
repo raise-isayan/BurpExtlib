@@ -1,5 +1,6 @@
 package extend.util;
 
+import extend.model.base.DefaultObjectTableModel;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
@@ -12,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
@@ -54,28 +56,53 @@ public final class SwingUtil {
     }
 
     public static void addItem(javax.swing.JTable srcTable, Object[] items) {
-        DefaultTableModel modelSrc = (DefaultTableModel) srcTable.getModel();
+        TableModel modelSrc = srcTable.getModel();
         int lastIndex = modelSrc.getRowCount() - 1;
-        modelSrc.addRow(items);
+        if (modelSrc instanceof DefaultTableModel) {
+            ((DefaultTableModel)modelSrc).addRow(items);
+        }
+//        else if (modelSrc instanceof DefaultObjectTableModel) {
+//            ((DefaultObjectTableModel)modelSrc).addRow(items);
+//        }
+        else {
+            throw new java.lang.ClassCastException("class cast Excaption:" + modelSrc.getClass().getName());
+        }
         srcTable.getSelectionModel().setSelectionInterval(lastIndex, lastIndex);
     }
 
     public static void insertItem(javax.swing.JTable srcTable, Object[] items) {
-        DefaultTableModel modelSrc = (DefaultTableModel) srcTable.getModel();
+        TableModel modelSrc = srcTable.getModel();
         int index = srcTable.getSelectedRow();
         if (-1 < index && index < srcTable.getRowCount()) {
             int rowIndex = srcTable.convertRowIndexToModel(index);
-            modelSrc.insertRow(rowIndex, items);
+            if (modelSrc instanceof DefaultTableModel) {
+                ((DefaultTableModel)modelSrc).insertRow(rowIndex, items);
+            }
+//            else {
+//                throw new java.lang.ClassCastException("class cast Excaption:" + modelSrc.getClass().getName());
+//            }                
+        }
+        else {
+            throw new java.lang.ClassCastException("class cast Excaption:" + modelSrc.getClass().getName());
         }
     }
 
     public static void updateItem(javax.swing.JTable srcTable, Object[] items, int viewIndex) {
-        DefaultTableModel modelSrc = (DefaultTableModel) srcTable.getModel();
+        TableModel modelSrc = srcTable.getModel();
         int index = viewIndex;
         if (-1 < index && index < srcTable.getRowCount()) {
             int rowIndex = srcTable.convertRowIndexToModel(index);
-            modelSrc.removeRow(rowIndex);
-            modelSrc.insertRow(rowIndex, items);
+            if (modelSrc instanceof DefaultTableModel) {
+                ((DefaultTableModel)modelSrc).removeRow(rowIndex);
+                ((DefaultTableModel)modelSrc).insertRow(rowIndex, items);
+            }
+//            else if (modelSrc instanceof DefaultObjectTableModel) {
+//                ((DefaultObjectTableModel)modelSrc).removeRow(rowIndex);
+//                ((DefaultObjectTableModel)modelSrc).insertRow(rowIndex, items);                
+//            }            
+            else {
+                throw new java.lang.ClassCastException("class cast Excaption:" + modelSrc.getClass().getName());
+            }
             srcTable.getSelectionModel().setSelectionInterval(rowIndex, rowIndex);
         }        
     }
@@ -85,18 +112,26 @@ public final class SwingUtil {
     }
 
     public static boolean removeItem(javax.swing.JTable srcTable) {
-        DefaultTableModel modelSrc = (DefaultTableModel) srcTable.getModel();
+        TableModel modelSrc = srcTable.getModel();
         int index = srcTable.getSelectedRow();
         if (index > -1) {
             int rowIndex = srcTable.convertRowIndexToModel(index);
-            modelSrc.removeRow(rowIndex);
+            if (modelSrc instanceof DefaultTableModel) {
+                ((DefaultTableModel)modelSrc).removeRow(rowIndex);
+            }
+            else if (modelSrc instanceof DefaultObjectTableModel) {
+                ((DefaultObjectTableModel)modelSrc).removeRow(rowIndex);
+            }
+            else {
+                throw new java.lang.ClassCastException("class cast Excaption:" + modelSrc.getClass().getName());
+            }
             return true;
         }
         return false;
     }
 
     public static Object[] editItem(javax.swing.JTable srcTable) {
-        DefaultTableModel modelSrc = (DefaultTableModel) srcTable.getModel();
+        TableModel modelSrc = srcTable.getModel();
         int index = srcTable.getSelectedRow();
         Object[] editRows = null;
         if (index > -1) {

@@ -10,6 +10,7 @@ import javax.swing.table.TableModel;
  * @author isayan
  * @param <T>
  */
+@Deprecated
 public abstract class ObjectTableModel<T> extends CustomTableModel {
 
     private List<T> data = null;
