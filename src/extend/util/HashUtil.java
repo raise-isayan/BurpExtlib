@@ -31,7 +31,7 @@ public final class HashUtil {
         MessageDigest md = MessageDigest.getInstance(algorithm);
         md.reset();
         md.update(body);
-        digeststr = javax.xml.bind.DatatypeConverter.printHexBinary(md.digest());
+        digeststr = ConvertUtil.toHexString(md.digest());
         if (upperCase) {
             return digeststr;
         }
