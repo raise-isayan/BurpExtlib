@@ -134,18 +134,26 @@ public class DefaultObjectTableModel<T extends ObjectTableMapping> extends Abstr
     //
     // Implementing the TableModel interface
     //
+    @Override
     public int getRowCount() {
         return this.data.size();
     }
 
+    @Override
     public int getColumnCount() {
         return this.columns.getColumnCount();
     }
 
+    @Override
     public String getColumnName(int column) {
         return this.columns.getColumnName(column);
     }
 
+    @Override
+    public Class<?> getColumnClass(int columnIndex) {
+        return this.columns.getColumnClass(columnIndex);
+    }
+    
     @Override
     public boolean isCellEditable(int row, int column) {
         if (this.editable) {

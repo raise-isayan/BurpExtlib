@@ -3,6 +3,7 @@ package extend.util;
 import java.io.ByteArrayOutputStream;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.zip.DataFormatException;
@@ -23,23 +24,34 @@ import org.w3c.dom.Text;
  * @author isayan
  */
 public final class ConvertUtil {
-    
-    public static String toBase64Encode(String src, String enc)
+
+    public static String toBase64Encode(String src, Charset charset)
             throws UnsupportedEncodingException {
-        byte bytes [] = Base64.getEncoder().encode(src.getBytes(enc));
+        byte bytes [] = Base64.getEncoder().encode(src.getBytes(charset));
         return Util.getRawStr(bytes);
-        //return DatatypeConverter.printBase64Binary(str.getBytes(enc));
+    }
+    
+    public static String toBase64Encode(String src, String charset)
+            throws UnsupportedEncodingException {
+        byte bytes [] = Base64.getEncoder().encode(src.getBytes(charset));
+        return Util.getRawStr(bytes);
     }
 
     public static String toBase64Encode(byte [] src) {
         byte bytes [] = Base64.getEncoder().encode(src);
         return Util.getRawStr(bytes);
     }
-    
-    public static String toBase64Decode(String str, String enc)
+
+    public static String toBase64Decode(String str, Charset charset)
             throws UnsupportedEncodingException {
         byte bytes [] = Base64.getDecoder().decode(str);
-        return new String(bytes, enc);
+        return new String(bytes, charset);
+    }
+    
+    public static String toBase64Decode(String str, String charset)
+            throws UnsupportedEncodingException {
+        byte bytes [] = Base64.getDecoder().decode(str);
+        return new String(bytes, charset);
     }
 
     public static byte[] toBase64Decode(String str) {
