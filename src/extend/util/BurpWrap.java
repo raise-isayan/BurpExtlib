@@ -9,6 +9,7 @@ import burp.IHttpService;
 import burp.IRequestInfo;
 import burp.IResponseInfo;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -150,9 +151,9 @@ public class BurpWrap {
         }
         if (message != null) {
             if (se == null) {
-                text = Util.decodeMessage(message, "8859_1");
+                text = Util.decodeMessage(message, StandardCharsets.ISO_8859_1);
             } else {
-                text = Util.decodeMessage(message, se[0], se[1] - se[0], "8859_1");
+                text = Util.decodeMessage(message, se[0], se[1] - se[0], StandardCharsets.ISO_8859_1);
             }
         }
         return text;
@@ -175,7 +176,7 @@ public class BurpWrap {
             if (se == null) {
                 // nothing
             } else {
-                text = Util.decodeMessage(Util.byteReplace(message, se[0], se[1], Util.getRawByte(text)), "8859_1");
+                text = Util.decodeMessage(Util.byteReplace(message, se[0], se[1], Util.getRawByte(text)), StandardCharsets.ISO_8859_1);
             }
         }
         if (context == IContextMenuInvocation.CONTEXT_MESSAGE_EDITOR_REQUEST || context == IContextMenuInvocation.CONTEXT_MESSAGE_VIEWER_REQUEST) {

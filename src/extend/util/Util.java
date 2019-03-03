@@ -204,7 +204,7 @@ public final class Util {
      * @return バイト列
      */
     public static String decodeMessage(byte[] message) {
-        return decodeMessage(message, "8859_1");
+        return decodeMessage(message, StandardCharsets.ISO_8859_1);
     }
 
     /**
@@ -214,7 +214,7 @@ public final class Util {
      * @return
      */
     public static byte[] encodeMessage(String message) {
-        return encodeMessage(message, "8859_1");
+        return encodeMessage(message, StandardCharsets.ISO_8859_1);
     }
 
     public static String decodeMessage(byte[] message, String encoding) {
@@ -225,7 +225,15 @@ public final class Util {
         }
         return decodeStr;
     }
+    
+    public static String decodeMessage(byte[] message, Charset charset) {
+        return new String(message, charset);
+    }
 
+    public static String decodeMessage(byte[] message, int offset, int length, Charset charset) {
+        return new String(message, offset, length, charset);
+    }
+    
     public static String decodeMessage(byte[] message, int offset, int length, String encoding) {
         String decodeStr = null;
         try {
@@ -235,6 +243,10 @@ public final class Util {
         return decodeStr;
     }
 
+    public static byte[] encodeMessage(String message, Charset charset) {
+        return message.getBytes(charset);
+    }
+    
     public static byte[] encodeMessage(String message, String encoding) {
         byte[] encodeByte = null;
         try {

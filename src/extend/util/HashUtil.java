@@ -1,8 +1,12 @@
 package extend.util;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.zip.Adler32;
+import java.util.zip.CRC32;
 
 /**
  *
@@ -10,6 +14,21 @@ import java.security.NoSuchAlgorithmException;
  */
 public final class HashUtil {
 
+    /**
+     * ハッシュ値の取得
+     *
+     * @param algorithm
+     * @param str 対象文字列
+     * @param enc エンコーディング
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     * @throws java.security.NoSuchAlgorithmException
+     */
+    public static String toMessageDigest(String algorithm, String str, Charset charset, boolean upperCase)
+            throws NoSuchAlgorithmException {
+        return toMessageDigest(algorithm, str.getBytes(charset), upperCase);
+    }
+    
     /**
      * ハッシュ値の取得
      *
@@ -62,10 +81,8 @@ public final class HashUtil {
      */
     public static String toMd2Sum(String str, boolean upperCase) {
         try {
-            return toMessageDigest("MD2", str, "8859_1", upperCase);
+            return toMessageDigest("MD2", str, StandardCharsets.ISO_8859_1, upperCase);
         } catch (NoSuchAlgorithmException ex) {
-            return null;
-        } catch (UnsupportedEncodingException ex) {
             return null;
         }
     }
@@ -109,10 +126,8 @@ public final class HashUtil {
      */
     public static String toMd5Sum(String str, boolean upperCase) {
         try {
-            return toMessageDigest("MD5", str, "8859_1", upperCase);
+            return toMessageDigest("MD5", str, StandardCharsets.ISO_8859_1, upperCase);
         } catch (NoSuchAlgorithmException ex) {
-            return null;
-        } catch (UnsupportedEncodingException ex) {
             return null;
         }
     }
@@ -156,10 +171,8 @@ public final class HashUtil {
      */
     public static String toSHA1Sum(String str, boolean upperCase) {
         try {
-            return toMessageDigest("SHA-1", str, "8859_1", upperCase);
+            return toMessageDigest("SHA-1", str, StandardCharsets.ISO_8859_1, upperCase);
         } catch (NoSuchAlgorithmException ex) {
-            return null;
-        } catch (UnsupportedEncodingException ex) {
             return null;
         }
     }
@@ -203,10 +216,8 @@ public final class HashUtil {
      */
     public static String toSHA256Sum(String str, boolean upperCase) {
         try {
-            return toMessageDigest("SHA-256", str, "8859_1", upperCase);
+            return toMessageDigest("SHA-256", str, StandardCharsets.ISO_8859_1, upperCase);
         } catch (NoSuchAlgorithmException ex) {
-            return null;
-        } catch (UnsupportedEncodingException ex) {
             return null;
         }
     }
@@ -250,10 +261,8 @@ public final class HashUtil {
      */
     public static String toSHA384Sum(String str, boolean upperCase) {
         try {
-            return toMessageDigest("SHA-384", str, "8859_1", upperCase);
+            return toMessageDigest("SHA-384", str, StandardCharsets.ISO_8859_1, upperCase);
         } catch (NoSuchAlgorithmException ex) {
-            return null;
-        } catch (UnsupportedEncodingException ex) {
             return null;
         }
     }
@@ -297,10 +306,8 @@ public final class HashUtil {
      */
     public static String toSHA512Sum(String str, boolean upperCase) {
         try {
-            return toMessageDigest("SHA-512", str, "8859_1", upperCase);
+            return toMessageDigest("SHA-512", str, StandardCharsets.ISO_8859_1, upperCase);
         } catch (NoSuchAlgorithmException ex) {
-            return null;
-        } catch (UnsupportedEncodingException ex) {
             return null;
         }
     }
@@ -321,5 +328,27 @@ public final class HashUtil {
             return null;
         }
     }
-    
+
+    public static long toCRC32Sum(String str, String enc) throws UnsupportedEncodingException {
+        return toCRC32Sum(str.getBytes(enc));  
+    }
+
+    public static long toCRC32Sum(byte [] body) {
+        CRC32 crc = new CRC32();
+        crc.reset();
+        crc.update(body);
+        return crc.getValue();  
+    }
+
+    public static long toAdler32Sum(String str, String enc) throws UnsupportedEncodingException {
+        return toAdler32Sum(str.getBytes(enc));  
+    }
+
+    public static long toAdler32Sum(byte [] body) {
+        Adler32 crc = new Adler32();
+        crc.reset();
+        crc.update(body);
+        return crc.getValue();  
+    }
+        
 }

@@ -281,12 +281,12 @@ public final class HttpUtil {
         return buff.toString();
     }
 
-    public static Map.Entry getParameter(String plain) {
+    public static Map.Entry<String, String> getParameter(String plain) {
         String s[] = plain.split("=", 2);
         if (s.length == 1) {
-            return new AbstractMap.SimpleEntry(s[0], "");
+            return new AbstractMap.SimpleEntry<String, String>(s[0], "");
         } else {
-            return new AbstractMap.SimpleEntry(s[0], s[1]);
+            return new AbstractMap.SimpleEntry<String, String>(s[0], s[1]);
         }
     }
 
