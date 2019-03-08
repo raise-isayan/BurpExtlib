@@ -1,6 +1,13 @@
 package extend.util;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
@@ -8,6 +15,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 import java.util.zip.Inflater;
 //import javax.xml.bind.DatatypeConverter;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -127,11 +136,25 @@ public final class ConvertUtil {
 	return writer.toString();
     }    
 
+    public static byte [] compressGzip(byte [] content) throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try (BufferedInputStream in = new BufferedInputStream(new ByteArrayInputStream(content))) {
+            byte[] buf = new byte[1024];
+            int size; 
+            try (OutputStream gos = new GZIPOutputStream(baos)) {
+                while ((size = in.read(buf, 0, buf.length)) != -1) { 
+                    gos.write(buf, 0, size); 
+                }
+                gos.flush();
+            }
+        }
+        return baos.toByteArray();        
+    }
+    
     public static byte [] compressZlib(byte [] content) {
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
-        Deflater compresser = new Deflater();
+        Deflater compresser = new Deflater(Deflater.BEST_COMPRESSION, true);
         try {
-            compresser.setLevel(Deflater.BEST_COMPRESSION);
             compresser.setInput(content);
             compresser.finish();
             byte[] buf = new byte[1024];
@@ -151,9 +174,24 @@ public final class ConvertUtil {
         //return DatatypeConverter.printBase64Binary(compressZlib(Util.getRawByte(content)));
     }
 
+    public static byte [] decompressGzip(byte [] content) throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try (GZIPInputStream gis = new GZIPInputStream(new ByteArrayInputStream(content))) {
+            try (BufferedOutputStream out = new BufferedOutputStream(baos)) {
+                byte[] buf = new byte[1024]; 
+                int size; 
+                while ((size = gis.read(buf, 0, buf.length)) != -1) { 
+                    out.write(buf, 0, size); 
+                } 
+                out.flush();         
+            } 
+        }
+        return baos.toByteArray();        
+    }
+
     public static byte [] decompressZlib(byte [] content) {
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
-        Inflater decompresser = new Inflater();
+        Inflater decompresser = new Inflater(true);
         try {
             decompresser.setInput(content);
             byte[] buf = new byte[1024];
