@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
  * @author isayan
  */
 public class HttpMessage {
-    public static String LINE_TERMINATE = "\r\n";
+    public final static String LINE_TERMINATE = "\r\n";
     private final Pattern CONTENT_LENGTH = Pattern.compile("^(Content-Length:\\s*)(\\d+)$", Pattern.MULTILINE);
     private final Pattern CONTENT_TYPE = Pattern.compile("^Content-Type:\\s*(.*?)(?:;\\s+charset=[\"\']?([\\w_-]+)[\"\']?)?\\s*$", Pattern.MULTILINE);
     

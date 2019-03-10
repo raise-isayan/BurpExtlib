@@ -4,8 +4,6 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringWriter;
@@ -18,7 +16,6 @@ import java.util.zip.Deflater;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 import java.util.zip.Inflater;
-//import javax.xml.bind.DatatypeConverter;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
@@ -169,9 +166,12 @@ public final class ConvertUtil {
         return bout.toByteArray();        
     }
     
+    public static String compressZlibBase64(String content, Charset charset) {
+        return toBase64Encode(compressZlib(Util.encodeMessage(content, charset)));
+    }
+
     public static String compressZlibBase64(String content) {
-        return toBase64Encode(compressZlib(Util.getRawByte(content)));
-        //return DatatypeConverter.printBase64Binary(compressZlib(Util.getRawByte(content)));
+        return compressZlibBase64(content, StandardCharsets.ISO_8859_1);
     }
 
     public static byte [] decompressGzip(byte [] content) throws IOException {
@@ -211,12 +211,14 @@ public final class ConvertUtil {
         return bout.toByteArray();
     }
     
-    
-    public static String decompressZlibBase64(String content) {
-        return Util.getRawStr(decompressZlib(toBase64Decode(content)));
-//        return Util.getRawStr(decompressZlib(DatatypeConverter.parseBase64Binary(content)));
+    public static String decompressZlibBase64(String content, Charset charset) {
+        return Util.decodeMessage(decompressZlib(toBase64Decode(content)), charset);
     }
 
+    public static String decompressZlibBase64(String content) {
+        return decompressZlibBase64(content, StandardCharsets.ISO_8859_1);
+    }
+    
     /**
      * 正規表現のエンコード(エスケープ)
      *

@@ -1,6 +1,8 @@
 package extend.util;
 
 import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -233,8 +235,7 @@ public class IniProp {
      * @param sectionName セクション名
      * @return セクションハッシュ
      */
-    protected Map<String, Object> readSection(
-            String sectionName) {
+    protected Map<String, Object> readSection(String sectionName) {
         return readSection(this.section, sectionName);
     }
 
@@ -245,8 +246,7 @@ public class IniProp {
      * @return セクションリスト
      */
     @SuppressWarnings("unchecked")
-    public List readSectionKeys(
-            String sectionName) {
+    public List readSectionKeys(String sectionName) {
         Map<String, Object> entry = readSection(this.section, sectionName);
         return new ArrayList(Util.toList(entry.keySet().iterator()));
     }
@@ -278,8 +278,7 @@ public class IniProp {
      *
      * @param sectionName セクションハッシュ
      */
-    public void remove(
-            String sectionName) {
+    public void remove(String sectionName) {
         this.section.remove(sectionName);
     }
 
@@ -317,7 +316,16 @@ public class IniProp {
      * @throws FileNotFoundException
      */
     public void loadFromXML(String content) throws IOException {
-        ByteArrayInputStream bin = new ByteArrayInputStream(content.getBytes("UTF-8"));
+        this.loadFromXML(content, StandardCharsets.ISO_8859_1);
+    }
+
+    /**
+     * XMLファイルの読み込み処理
+     *
+     * @throws FileNotFoundException
+     */
+    public void loadFromXML(String content, Charset charset) throws IOException {
+        ByteArrayInputStream bin = new ByteArrayInputStream(content.getBytes(charset));
         loadFromXML(bin);
     }
     
@@ -327,8 +335,7 @@ public class IniProp {
      * @param instm XMLファイルストリーム
      * @throws java.io.IOException
      */
-    protected void loadFromXML(
-            InputStream instm) throws IOException {
+    protected void loadFromXML(InputStream instm) throws IOException {
         try {
             this.clear(); // クリアする
             DocumentBuilder builder = factory.newDocumentBuilder();
@@ -349,8 +356,7 @@ public class IniProp {
      *
      * @param document XMLドキュメント
      */
-    protected void readXMLItems(
-            Document document) {
+    protected void readXMLItems(Document document) {
         Element docElement = document.getDocumentElement();
         NodeList nodeSelectionList = docElement.getElementsByTagName("section");
         for (int i = 0; i < nodeSelectionList.getLength(); i++) {
@@ -378,8 +384,7 @@ public class IniProp {
      * @return エントリー値
      */
     @SuppressWarnings("unchecked")
-    protected Object readXMLItems(
-            Element nodeEntry) {
+    protected Object readXMLItems(Element nodeEntry) {
         Object entryValue = getNodeText(nodeEntry);
         String typeValue = nodeEntry.getAttribute("type");
         if ("List".equals(typeValue)) {
@@ -473,10 +478,7 @@ public class IniProp {
      * @param encoding エンコーディング
      * @throws java.io.IOException
      */
-    protected void storeToXML(
-            OutputStream ostm,
-            String comment,
-            String encoding) throws IOException {
+    protected void storeToXML(OutputStream ostm, String comment, String encoding) throws IOException {
         try {
             Transformer transformer = transFactory.newTransformer();
             transformer.setOutputProperty(OutputKeys.ENCODING, encoding);
@@ -503,8 +505,7 @@ public class IniProp {
      *
      * @param element XMLライター
      */
-    protected void writeXMLItems(
-            Element element) {
+    protected void writeXMLItems(Element element) {
         Document document = element.getOwnerDocument();
         // セクションの作成
         Iterator emu = this.section.keySet().iterator();
@@ -532,9 +533,7 @@ public class IniProp {
      * @param element XMLライター
      * @param entryValue エントリー値
      */
-    protected void writeXMLItems(
-            Element element,
-            Object entryValue) {
+    protected void writeXMLItems(Element element, Object entryValue) {
         Document document = element.getOwnerDocument();
         // 配列
         if (entryValue instanceof List) {
