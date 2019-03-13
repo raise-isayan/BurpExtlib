@@ -28,7 +28,7 @@ public class RegexItem {
      */
     public void setMatch(String match) {
         this.match = match;
-        this.regex = compileRegex(false);
+        this.regex = compileRegex(!this.regexp);
     }
         
     private boolean regexp = true;
@@ -60,11 +60,10 @@ public class RegexItem {
      */
     public void setIgnoreCase(boolean ignoreCase) {
         this.ignoreCase = ignoreCase;
-        this.regex = this.compileRegex(false);
     }
 
     public boolean isValidRegex() {
-        return this.compileRegex(false) != null;
+        return this.compileRegex(!this.regexp) != null;
     }
     
     public Pattern compileRegex(boolean quote) {
