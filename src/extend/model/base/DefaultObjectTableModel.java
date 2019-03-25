@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 
 import java.util.List;
+import javax.swing.event.TableModelEvent;
 import javax.swing.table.TableModel;
 
 public class DefaultObjectTableModel<T extends ObjectTableMapping> extends AbstractTableModel {
@@ -187,4 +188,23 @@ public class DefaultObjectTableModel<T extends ObjectTableMapping> extends Abstr
         return this.editable;
     }
 
+        private boolean lockUpdate = false;
+    
+    public synchronized void beginUpdate()
+    {
+        this.lockUpdate = true;
+    }    
+
+    public synchronized void endUpdate() {
+        this.lockUpdate = false;    
+    }
+
+    @Override
+    public void fireTableChanged(TableModelEvent e) {
+        if (!this.lockUpdate) {
+            super.fireTableChanged(e);
+        }
+    }
+
+    
 }

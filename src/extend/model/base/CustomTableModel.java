@@ -1,6 +1,8 @@
 package extend.model.base;
 
 import javax.swing.JTable;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
@@ -122,6 +124,24 @@ public class CustomTableModel extends DefaultTableModel {
             buffer.append(System.lineSeparator());
         }
         return buffer.toString();
+    }
+
+    private boolean lockUpdate = false;
+    
+    public synchronized void beginUpdate()
+    {
+        this.lockUpdate = true;
+    }    
+
+    public synchronized void endUpdate() {
+        this.lockUpdate = false;    
+    }
+
+    @Override
+    public void fireTableChanged(TableModelEvent e) {
+        if (!this.lockUpdate) {
+            super.fireTableChanged(e);
+        }
     }
 
 }

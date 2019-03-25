@@ -9,6 +9,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -49,13 +50,23 @@ public class TargetScopeItemTest {
     public void testParseURL() {
         System.out.println("parseURL");
         try {
-            URL url = new URL("https://www.google.com/aaa");
-            TargetScopeItem expResult = null;
+            URL url = new URL("https://www.google.com/aaa?test=bbb#xyz");
             TargetScopeItem result = TargetScopeItem.parseURL(url);
-            assertEquals("^\\Qwww.google.com\\E$", result.getHost());
-            System.out.println(url.getFile());
-            System.out.println(result.getFile());
-            assertEquals("^/\\Q/aaa\\E.*", result.getFile());
+            {
+                String expResult = "^\\Qwww.google.com\\E$";
+                System.out.println(url.getHost());
+                assertEquals(expResult, result.getHost());            
+            }
+            {
+                String expResult = "\\Q/aaa?test=bbb\\E.*";
+                System.out.println(result.getFile());
+                assertEquals(expResult, result.getFile());            
+            }
+            {
+                int expResult = 443;
+                System.out.println(result.getPort());
+                assertEquals(expResult, result.getFile());            
+            }
         } catch (MalformedURLException ex) {
             Logger.getLogger(TargetScopeItemTest.class.getName()).log(Level.SEVERE, null, ex);
         }

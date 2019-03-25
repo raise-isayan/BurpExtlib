@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package extend.view.base;
 
 import java.util.regex.Pattern;
@@ -101,49 +96,6 @@ public class RegexItemTest {
             Pattern result = instance.compileRegex(false);
             assertEquals(expResult.pattern(), result.pattern());        
         }
-    }
-
-    /**
-     * Test of recompileRegex method, of class RegexItem.
-     */
-    @Test
-    public void testRecompileRegex() {
-        System.out.println("recompileRegex");
-        boolean quote = false;
-        RegexItem instance = new RegexItem();
-        instance.recompileRegex(quote);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getRegexPattern method, of class RegexItem.
-     */
-    @Test
-    public void testGetRegexPattern() {
-        System.out.println("getRegexPattern");
-        RegexItem instance = new RegexItem();
-        Pattern expResult = null;
-        Pattern result = instance.getRegexPattern();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of compileRegex method, of class RegexItem.
-     */
-    @Test
-    public void testCompileRegex_3args() {
-        System.out.println("compileRegex");
-        String text = "";
-        int flags = 0;
-        boolean quote = false;
-        Pattern expResult = null;
-        Pattern result = RegexItem.compileRegex(text, flags, quote);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
     
 }
