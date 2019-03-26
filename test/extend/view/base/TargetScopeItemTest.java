@@ -5,6 +5,7 @@
  */
 package extend.view.base;
 
+import extend.util.Util;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;
@@ -58,14 +59,14 @@ public class TargetScopeItemTest {
                 assertEquals(expResult, result.getHost());            
             }
             {
-                String expResult = "\\Q/aaa?test=bbb\\E.*";
+                String expResult = "^\\Q/aaa?test=bbb\\E.*";
                 System.out.println(result.getFile());
                 assertEquals(expResult, result.getFile());            
             }
             {
                 int expResult = 443;
                 System.out.println(result.getPort());
-                assertEquals(expResult, result.getFile());            
+                assertEquals(expResult, Util.parseIntDefault(result.getPort(), -1));            
             }
         } catch (MalformedURLException ex) {
             Logger.getLogger(TargetScopeItemTest.class.getName()).log(Level.SEVERE, null, ex);
