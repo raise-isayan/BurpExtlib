@@ -90,7 +90,7 @@ public class MatchItem extends RegexItem {
         private final static EnumMap<HighlightColor, ImageIcon> namedIcon = new EnumMap<HighlightColor, ImageIcon>(HighlightColor.class);
 
         static {
-            // WHITE == nonselect
+            // WHITE == unselect
             namedColor.put(RED, Color.RED);
             namedColor.put(ORANGE, Color.ORANGE);
             namedColor.put(YELLOW, Color.YELLOW);

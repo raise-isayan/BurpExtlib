@@ -1,11 +1,17 @@
 package extend.model.base;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
 import javax.swing.table.AbstractTableModel;
 
 import java.util.List;
+import javax.swing.JTree;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.TableModel;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 
 public class DefaultObjectTableModel<T extends ObjectTableMapping> extends AbstractTableModel {
 
@@ -206,5 +212,43 @@ public class DefaultObjectTableModel<T extends ObjectTableMapping> extends Abstr
         }
     }
 
+    public static void allNodesChanged(JTree tree) {
+        DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+        Enumeration e = root.preorderEnumeration();
+        while (e.hasMoreElements()) {
+            Object element = e.nextElement();
+            if (element instanceof TreeNode) {
+                TreeNode node = (TreeNode) element;
+                model.nodeChanged(node);
+            }
+        }        
+    }
+    
+    public void expandAll(JTree tree, TreePath path) {
+        TreeNode node = (TreeNode) path.getLastPathComponent();
+        if (node.getChildCount() >= 0) {
+            Enumeration enumeration = node.children();
+            while (enumeration.hasMoreElements()) {
+                TreeNode n = (TreeNode) enumeration.nextElement();
+                TreePath p = path.pathByAddingChild(n);
+                expandAll(tree, p);
+            }
+        }
+        tree.expandPath(path);
+    }
+
+    public void collapseAll(JTree tree, TreePath path) {
+        TreeNode node = (TreeNode) path.getLastPathComponent();
+        if (node.getChildCount() >= 0) {
+            Enumeration enumeration = node.children();
+            while (enumeration.hasMoreElements()) {
+                TreeNode n = (TreeNode) enumeration.nextElement();
+                TreePath p = path.pathByAddingChild(n);
+                expandAll(tree, p);
+            }
+        }
+        tree.collapsePath(path);        
+    }
     
 }
