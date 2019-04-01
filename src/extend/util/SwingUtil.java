@@ -225,6 +225,24 @@ public final class SwingUtil {
         };
     }
 
+    public static Icon createEmptyIcon() {
+        return new Icon() {
+            @Override
+            public void paintIcon(Component c, Graphics g, int x, int y) {
+                /* Empty icon */ }
+
+            @Override
+            public int getIconWidth() {
+                return 2;
+            }
+
+            @Override
+            public int getIconHeight() {
+                return 0;
+            }
+        };
+    }
+    
     public static class IntegerDocument extends PlainDocument {
         int currentValue = 0;
 
@@ -279,6 +297,23 @@ public final class SwingUtil {
             }
         }
     }
+
+    public static class ReadOnlyDocument extends PlainDocument {
+
+        public ReadOnlyDocument() {
+            super();
+        }
+
+        @Override
+        public void insertString(int offset, String str, AttributeSet attributes) throws BadLocationException {
+        }
+
+        @Override
+        public void remove(int offset, int length) throws BadLocationException {
+        }
+
+    }
+
     
     private static Toolkit toolkit = Toolkit.getDefaultToolkit();
 
