@@ -9,6 +9,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.File;
 import java.io.IOException;
+import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -17,6 +18,11 @@ import javax.swing.table.TableModel;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 
 /**
  *
@@ -143,7 +149,42 @@ public final class SwingUtil {
         }
         return editRows;
     }
+    
+    public static void allNodesChanged(JTree tree) {
+        DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+        Enumeration e = root.preorderEnumeration();
+        while (e.hasMoreElements()) {
+            Object element = e.nextElement();
+            if (element instanceof TreeNode) {
+                TreeNode node = (TreeNode) element;
+                model.nodeChanged(node);
+            }
+        }        
+    }
+    
+    public static void expandAll(JTree tree, TreePath path) {
+         Object node = path.getLastPathComponent();
+	TreeModel model = tree.getModel();
+	if (model.isLeaf(node))
+		return;
+	int num = model.getChildCount(node);
+	for (int i = 0; i < num; i++)
+            expandAll(tree, path.pathByAddingChild(model.getChild(node, i)));
+	tree.expandPath(path);
+    }
 
+    public static void collapseAll(JTree tree, TreePath path) {
+        Object node = path.getLastPathComponent();
+	TreeModel model = tree.getModel();
+	if (model.isLeaf(node))
+		return;
+	int num = model.getChildCount(node);
+	for (int i = 0; i < num; i++)
+            collapseAll(tree, path.pathByAddingChild(model.getChild(node, i)));
+	tree.collapsePath(path);
+    }
+        
     public static void setContainerEnable(Container container, boolean enabled) {
         Component[] list = container.getComponents();
         for (Component c : list) {
