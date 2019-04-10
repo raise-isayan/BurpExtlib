@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package extend.util;
 
 import java.io.UnsupportedEncodingException;
@@ -118,10 +113,10 @@ public class ConvertUtilTest {
     public void testToBASE64Encoder() {
         try {
             System.out.println("toBASE64Encoder");
-            assertEquals("PA==", ConvertUtil.toBase64Encode("<", "8859_1"));
-            assertEquals("dGVzdA==", ConvertUtil.toBase64Encode("test", "8859_1"));
-            assertEquals("ZnVnYWY=", ConvertUtil.toBase64Encode("fugaf", "8859_1"));
-            assertEquals("aG9nZWhv", ConvertUtil.toBase64Encode("hogeho", "8859_1"));
+            assertEquals("PA==", ConvertUtil.toBase64Encode("<", "8859_1", true));
+            assertEquals("dGVzdA==", ConvertUtil.toBase64Encode("test", "8859_1", true));
+            assertEquals("ZnVnYWY=", ConvertUtil.toBase64Encode("fugaf", "8859_1", true));
+            assertEquals("aG9nZWhv", ConvertUtil.toBase64Encode("hogeho", "8859_1", true));
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(ConvertUtilTest.class.getName()).log(Level.SEVERE, null, ex);
             assertTrue(false);

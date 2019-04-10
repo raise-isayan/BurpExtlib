@@ -15,6 +15,7 @@
     <target name="margepkg">
         <jar destfile="release/BurpExtlib.jar" update="false">
             <zipgroupfileset dir="dist/" includes="*.jar" />
+ <!--           <zipgroupfileset dir="dist/lib" includes="*.jar" /> -->
         </jar>
     </target>
 

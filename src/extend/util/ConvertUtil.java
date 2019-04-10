@@ -33,19 +33,52 @@ public final class ConvertUtil {
 
     public static String toBase64Encode(String src, Charset charset)
             throws UnsupportedEncodingException {
-        byte bytes [] = Base64.getEncoder().encode(src.getBytes(charset));
-        return Util.getRawStr(bytes);
+        return toBase64Encode(src, charset, true);
+    }
+        
+    public static String toBase64Encode(String src, Charset charset, boolean padding)
+            throws UnsupportedEncodingException {
+        if (padding) {
+            byte bytes [] = Base64.getEncoder().encode(src.getBytes(charset));
+            return Util.getRawStr(bytes);        
+        }
+        else {
+            byte bytes [] = Base64.getEncoder().withoutPadding().encode(src.getBytes(charset));
+            return Util.getRawStr(bytes);                
+        }
     }
     
     public static String toBase64Encode(String src, String charset)
             throws UnsupportedEncodingException {
-        byte bytes [] = Base64.getEncoder().encode(src.getBytes(charset));
-        return Util.getRawStr(bytes);
+        return toBase64Encode(src, charset, true);        
     }
 
-    public static String toBase64Encode(byte [] src) {
-        byte bytes [] = Base64.getEncoder().encode(src);
-        return Util.getRawStr(bytes);
+    public static String toBase64Encode(String src, String charset, boolean padding)
+            throws UnsupportedEncodingException {
+        if (padding) {
+            byte bytes [] = Base64.getEncoder().encode(src.getBytes(charset));
+            return Util.getRawStr(bytes);
+        }
+        else {
+            byte bytes [] = Base64.getEncoder().withoutPadding().encode(src.getBytes(charset));
+            return Util.getRawStr(bytes);                
+        }
+    }
+
+    public static String toBase64Encode(byte [] src, String charset)
+            throws UnsupportedEncodingException {
+        return toBase64Encode(src, true);        
+    }
+    
+    public static String toBase64Encode(byte [] src, boolean padding) {
+        if (padding) {
+            byte bytes [] = Base64.getEncoder().encode(src);
+            return Util.getRawStr(bytes);
+        }
+        else {
+            byte bytes [] = Base64.getEncoder().withoutPadding().encode(src);
+            return Util.getRawStr(bytes);
+        }
     }
 
     public static String toBase64Decode(String str, Charset charset)
@@ -63,7 +96,40 @@ public final class ConvertUtil {
     public static byte[] toBase64Decode(String str) {
         return Base64.getDecoder().decode(str);
     }
+    
+    public static String toBase64URLSafeEncode(String src, Charset charset)
+            throws UnsupportedEncodingException {
+        byte bytes [] = Base64.getUrlEncoder().withoutPadding().encode(src.getBytes(charset));
+        return Util.getRawStr(bytes);
+    }
+    
+    public static String toBase64URLSafeEncode(String src, String charset)
+            throws UnsupportedEncodingException {
+        byte bytes [] = Base64.getUrlEncoder().withoutPadding().encode(src.getBytes(charset));
+        return Util.getRawStr(bytes);
+    }
 
+    public static String toBase64URLSafeEncode(byte [] src) {
+        byte bytes [] = Base64.getUrlEncoder().withoutPadding().encode(src);
+        return Util.getRawStr(bytes);
+    }
+        
+    public static String toBase64URLSafeDecode(String str, Charset charset)
+            throws UnsupportedEncodingException {
+        byte bytes [] = Base64.getUrlDecoder().decode(str);
+        return new String(bytes, charset);
+    }
+    
+    public static String toBase64URLSafeDecode(String str, String charset)
+            throws UnsupportedEncodingException {
+        byte bytes [] = Base64.getUrlDecoder().decode(str);
+        return new String(bytes, charset);
+    }
+
+    public static byte[] toBase64URLSafeDecode(String str) {
+        return Base64.getUrlDecoder().decode(str);
+    }
+        
     public static String toHexString(byte[] input) {
         StringBuilder digestbuff = new StringBuilder();
         for (int i = 0; i < input.length; i++) {
@@ -167,7 +233,7 @@ public final class ConvertUtil {
     }
     
     public static String compressZlibBase64(String content, Charset charset) {
-        return toBase64Encode(compressZlib(Util.encodeMessage(content, charset)));
+        return toBase64Encode(compressZlib(Util.encodeMessage(content, charset)), true);
     }
 
     public static String compressZlibBase64(String content) {
