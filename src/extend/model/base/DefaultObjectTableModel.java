@@ -1,17 +1,11 @@
 package extend.model.base;
 
 import java.util.ArrayList;
-import java.util.Enumeration;
 import javax.swing.table.AbstractTableModel;
 
 import java.util.List;
-import javax.swing.JTree;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.TableModel;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeNode;
-import javax.swing.tree.TreePath;
 
 public class DefaultObjectTableModel<T extends ObjectTableMapping> extends AbstractTableModel {
 
@@ -184,7 +178,7 @@ public class DefaultObjectTableModel<T extends ObjectTableMapping> extends Abstr
         fireTableCellUpdated(row, column);        
     }
     
-    public boolean editable = false;
+    private boolean editable = false;
     
     public void setCellEditable(boolean editable) {
         this.editable = editable;
