@@ -3,7 +3,6 @@ package extend.util;
 import java.io.UnsupportedEncodingException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.xml.bind.DatatypeConverter;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -135,8 +134,6 @@ public class ConvertUtilTest {
             assertEquals("fugaf", ConvertUtil.toBase64Decode("ZnVnYWY=", "8859_1"));
             assertEquals("test", ConvertUtil.toBase64Decode("dGVzdA==", "8859_1"));
             System.out.println(ConvertUtil.toBase64Decode("absdadbd", "8859_1"));
-            byte[] bytes = DatatypeConverter.parseHexBinary("abdadb0d");           
-            System.out.println(ConvertUtil.toHexString(bytes));
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(ConvertUtilTest.class.getName()).log(Level.SEVERE, null, ex);
             assertTrue(false);

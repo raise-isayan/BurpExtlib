@@ -4,14 +4,16 @@
  */
 package extend.view.base;
 
-import extend.util.SwingUtil;
-import extend.util.Util;
 import java.awt.Color;
 import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import javax.swing.ImageIcon;
+
+import extend.util.SwingUtil;
+import extend.util.Util;
 
 /**
  *
@@ -23,7 +25,7 @@ public class MatchItem extends RegexItem {
 
         PROXY, REPEATER, SPIDER, INTRUDER, SCANNER, SEQUENCER;
 
-        public static TargetTool parseValue(String value) {            
+        public static TargetTool parseValue(String value) {
             TargetTool eval = (TargetTool) Util.parseEnumValue(TargetTool.class, value);
             if (eval == null) {
                 return TargetTool.PROXY;
@@ -42,7 +44,7 @@ public class MatchItem extends RegexItem {
             }
             return values;
         }
-        
+
         @Override
         public String toString() {
             String value = name().toLowerCase();
@@ -54,7 +56,7 @@ public class MatchItem extends RegexItem {
 
         ALERTS_TAB, TRAY_MESSAGE, ITEM_HIGHLIGHT, COMMENT, SCANNER_ISSUE;
 
-        public static NotifyType parseValue(String value) {            
+        public static NotifyType parseValue(String value) {
             NotifyType eval = (NotifyType) Util.parseEnumValue(NotifyType.class, value);
             if (eval == null) {
                 return NotifyType.ALERTS_TAB;
@@ -73,13 +75,13 @@ public class MatchItem extends RegexItem {
             }
             return values;
         }
-        
+
         @Override
         public String toString() {
             String value = name().toLowerCase();
             return value.replace('_', ' ');
         }
-        
+
     };
 
     public enum HighlightColor {
@@ -121,7 +123,7 @@ public class MatchItem extends RegexItem {
             return namedIcon.get(this);
         }
 
-        public static HighlightColor parseValue(String value) {            
+        public static HighlightColor parseValue(String value) {
             HighlightColor eval = (HighlightColor) Util.parseEnumValue(HighlightColor.class, value);
             if (eval == null) {
                 return HighlightColor.WHITE;
@@ -140,7 +142,7 @@ public class MatchItem extends RegexItem {
             }
             return values;
         }
-        
+
         @Override
         public String toString() {
             String value = name().toLowerCase();
@@ -149,7 +151,7 @@ public class MatchItem extends RegexItem {
     };
 
     public static enum Severity {
-        HIGH, MEDIUM, LOW, INFORMATION, FALSE_POSITIVE;    
+        HIGH, MEDIUM, LOW, INFORMATION, FALSE_POSITIVE;
 
         @Override
         public String toString() {
@@ -163,7 +165,7 @@ public class MatchItem extends RegexItem {
             String value = s.toUpperCase();
             return Enum.valueOf(Severity.class, value);
         }
-                
+
     };
 
     public static enum Confidence {
@@ -181,7 +183,7 @@ public class MatchItem extends RegexItem {
             String value = s.toUpperCase();
             return Enum.valueOf(Confidence.class, value);
         }
-        
+
     }
 
     private boolean selected = true;
@@ -214,7 +216,7 @@ public class MatchItem extends RegexItem {
     public void setType(String type) {
         this.type = type;
     }
-    
+
     private String replace = "";
 
     /**
@@ -223,10 +225,9 @@ public class MatchItem extends RegexItem {
     public String getReplace() {
         return this.getReplace(false);
     }
-    
+
     /**
      * @param quote
-     * @param metachar
      * @return the replace
      */
     public String getReplace(boolean quote) {
@@ -243,5 +244,5 @@ public class MatchItem extends RegexItem {
     public void setReplace(String replace) {
         this.replace = replace;
     }
-    
+
 }

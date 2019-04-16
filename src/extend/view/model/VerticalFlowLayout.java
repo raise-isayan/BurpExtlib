@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package extend.view.model;
 
 import java.awt.Component;
@@ -42,7 +38,7 @@ public class VerticalFlowLayout implements LayoutManager {
      * 指定された名前で、指定されたコンポーネントをレイアウトに追加します。
      *
      * @param name コンポーネントの名前
-     * @comp - 追加されるコンポーネント 未実装です。
+     * @param comp - 追加されるコンポーネント 未実装です。
      */
     @Override
     public void addLayoutComponent(String name, Component comp) {

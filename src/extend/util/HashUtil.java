@@ -19,16 +19,16 @@ public final class HashUtil {
      *
      * @param algorithm
      * @param str 対象文字列
-     * @param enc エンコーディング
+     * @param charset エンコーディング
+     * @param upperCase 大文字で出力
      * @return ハッシュ値
-     * @throws UnsupportedEncodingException
      * @throws java.security.NoSuchAlgorithmException
      */
     public static String toMessageDigest(String algorithm, String str, Charset charset, boolean upperCase)
             throws NoSuchAlgorithmException {
         return toMessageDigest(algorithm, str.getBytes(charset), upperCase);
     }
-    
+
     /**
      * ハッシュ値の取得
      *
@@ -55,7 +55,7 @@ public final class HashUtil {
             return digeststr;
         }
         else {
-            return digeststr.toLowerCase();        
+            return digeststr.toLowerCase();
         }
     }
 
@@ -330,25 +330,25 @@ public final class HashUtil {
     }
 
     public static long toCRC32Sum(String str, String enc) throws UnsupportedEncodingException {
-        return toCRC32Sum(str.getBytes(enc));  
+        return toCRC32Sum(str.getBytes(enc));
     }
 
     public static long toCRC32Sum(byte [] body) {
         CRC32 crc = new CRC32();
         crc.reset();
         crc.update(body);
-        return crc.getValue();  
+        return crc.getValue();
     }
 
     public static long toAdler32Sum(String str, String enc) throws UnsupportedEncodingException {
-        return toAdler32Sum(str.getBytes(enc));  
+        return toAdler32Sum(str.getBytes(enc));
     }
 
     public static long toAdler32Sum(byte [] body) {
         Adler32 crc = new Adler32();
         crc.reset();
         crc.update(body);
-        return crc.getValue();  
+        return crc.getValue();
     }
-        
+
 }
