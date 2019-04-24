@@ -26,7 +26,7 @@ import javax.swing.ListModel;
  */
 public final class Util {
 
-    private static final SecureRandom random = new SecureRandom();
+    private static final SecureRandom RANDOM = new SecureRandom();
 
     public static final String DEFAULT_ENCODING = System.getProperty("file.encoding");
     public static final String NEW_LINE = System.getProperty("line.separator");
@@ -480,7 +480,7 @@ public final class Util {
     public static String randomNumeric(int length) {
         StringBuilder buff = new StringBuilder();
         for (int i = 0; i < length; i++) {
-            buff.append(NUM_CHARS[random.nextInt(NUM_CHARS.length)]);
+            buff.append(NUM_CHARS[RANDOM.nextInt(NUM_CHARS.length)]);
         }
         return buff.toString();
     }
@@ -488,7 +488,7 @@ public final class Util {
     public static String randomIdent(int length) {
         StringBuilder buff = new StringBuilder();
         for (int i = 0; i < length; i++) {
-            buff.append(IDENT_CHARS[random.nextInt(IDENT_CHARS.length)]);
+            buff.append(IDENT_CHARS[RANDOM.nextInt(IDENT_CHARS.length)]);
         }
         return buff.toString();
     }
@@ -497,7 +497,7 @@ public final class Util {
         char[] chars = range.toCharArray();
         StringBuilder buff = new StringBuilder();
         for (int i = 0; i < length; i++) {
-            buff.append(chars[random.nextInt(chars.length)]);
+            buff.append(chars[RANDOM.nextInt(chars.length)]);
         }
         return buff.toString();
     }

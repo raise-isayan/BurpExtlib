@@ -53,8 +53,7 @@ public final class HashUtil {
         digeststr = ConvertUtil.toHexString(md.digest());
         if (upperCase) {
             return digeststr;
-        }
-        else {
+        } else {
             return digeststr.toLowerCase();
         }
     }
@@ -333,7 +332,7 @@ public final class HashUtil {
         return toCRC32Sum(str.getBytes(enc));
     }
 
-    public static long toCRC32Sum(byte [] body) {
+    public static long toCRC32Sum(byte[] body) {
         CRC32 crc = new CRC32();
         crc.reset();
         crc.update(body);
@@ -344,7 +343,7 @@ public final class HashUtil {
         return toAdler32Sum(str.getBytes(enc));
     }
 
-    public static long toAdler32Sum(byte [] body) {
+    public static long toAdler32Sum(byte[] body) {
         Adler32 crc = new Adler32();
         crc.reset();
         crc.update(body);

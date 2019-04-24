@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package extend.view.base;
 
 import extend.util.HttpUtil;
@@ -15,10 +11,11 @@ import java.util.regex.Pattern;
  * @author isayan
  */
 public class HttpMessage {
+
     public final static String LINE_TERMINATE = "\r\n";
     private final Pattern CONTENT_LENGTH = Pattern.compile("^(Content-Length:\\s*)(\\d+)$", Pattern.MULTILINE);
     private final Pattern CONTENT_TYPE = Pattern.compile("^Content-Type:\\s*(.*?)(?:;\\s+charset=[\"\']?([\\w_-]+)[\"\']?)?\\s*$", Pattern.MULTILINE);
-    
+
     private String header = "";
     private String body = "";
 
@@ -65,7 +62,7 @@ public class HttpMessage {
     public String getHeader(String name) {
         return HttpUtil.getHeader(name, this.getHeaders());
     }
-    
+
     /**
      * @return the body
      */
@@ -116,11 +113,11 @@ public class HttpMessage {
         return (this.body.length() > 0);
     }
 
-    public static HttpMessage parseHttpMessage(byte[] message)  {
+    public static HttpMessage parseHttpMessage(byte[] message) {
         return parseHttpMessage(Util.decodeMessage(message));
     }
 
-    public static HttpMessage parseHttpMessage(String message)  {
+    public static HttpMessage parseHttpMessage(String message) {
         String[] splitMessage = message.split("(\r\n){2}", 2);
         HttpMessage httpMsg = new HttpMessage();
         httpMsg.setHeader(splitMessage[0]);
@@ -136,7 +133,7 @@ public class HttpMessage {
         if (m.find()) {
             contentlen = Util.parseIntDefault(m.group(2), 0);
         }
-        return contentlen;        
+        return contentlen;
     }
 
     public void updateContentLength(boolean updateLength) {
@@ -153,37 +150,35 @@ public class HttpMessage {
             }
             m.appendReplacement(buff, replace.toString());
             m.appendTail(buff);
-        }
-        else {
+        } else {
             buff.append(this.getHeader());
             if (this.getBody().length() > 0) {
                 buff.append(LINE_TERMINATE);
                 buff.append("Content-Length: ");
-                buff.append(this.getBody().length());            
+                buff.append(this.getBody().length());
             }
         }
         this.setHeader(buff.toString());
     }
-    
+
     public boolean isContentMimeType(String mime) {
         String mimeType = this.getContentMimeType();
         if (mimeType != null) {
             return mimeType.contains(mime);
-        }
-        else {
+        } else {
             return false;
         }
     }
-    
+
     public String getContentMimeType() {
         String mimeType = null;
         Matcher m = CONTENT_TYPE.matcher(this.getHeader());
         if (m.find()) {
             mimeType = m.group(1);
         }
-        return mimeType;        
+        return mimeType;
     }
-    
+
     public String getGuessCharset() {
         String charset = null;
         Matcher m = CONTENT_TYPE.matcher(this.getHeader());
@@ -212,12 +207,10 @@ public class HttpMessage {
         String message = Util.getRawStr(messageByte);
         String[] splitMessage = message.split("(\r\n){2}", 2);
         if (splitMessage.length == 1) {
-            return new byte [][] {Util.getRawByte(splitMessage[0]), new byte [] {}};        
-        }
-        else {
-            return new byte [][] {Util.getRawByte(splitMessage[0]), Util.getRawByte(splitMessage[1])};                
+            return new byte[][]{Util.getRawByte(splitMessage[0]), new byte[]{}};
+        } else {
+            return new byte[][]{Util.getRawByte(splitMessage[0]), Util.getRawByte(splitMessage[1])};
         }
     }
-    
-    
+
 }

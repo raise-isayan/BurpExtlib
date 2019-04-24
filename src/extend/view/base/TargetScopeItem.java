@@ -1,11 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package extend.view.base;
 
 import extend.util.HttpUtil;
-import extend.util.Util;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;

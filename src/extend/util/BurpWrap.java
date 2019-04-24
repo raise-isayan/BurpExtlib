@@ -51,7 +51,7 @@ public class BurpWrap {
     public static boolean isInScope(java.net.URL url) {
         return callbacks.isInScope(url);
     }
-    
+
     public static IHttpService getHttpService(final IHttpRequestResponse messageInfo) {
         try {
             return messageInfo.getHttpService();
@@ -83,10 +83,11 @@ public class BurpWrap {
 
         };
     }
+
     public static String getURLString(IHttpService httpService) {
-        return String.format("%s://%s:%d", httpService.getProtocol(), httpService.getHost(), httpService.getPort()); 
+        return String.format("%s://%s:%d", httpService.getProtocol(), httpService.getHost(), httpService.getPort());
     }
-    
+
     public static URL getURL(IHttpRequestResponse messageInfo) {
         if (helpers == null) {
             throw new NullPointerException("There is a need to call the 'assained' method");
@@ -124,17 +125,6 @@ public class BurpWrap {
         };
     }
 
-//    protected byte [] getMessage(IContextMenuInvocation contextMenu) {
-//        byte context = contextMenu.getInvocationContext();
-//        byte message[] = new byte [0];
-//        if (context == IContextMenuInvocation.CONTEXT_MESSAGE_EDITOR_REQUEST || context == IContextMenuInvocation.CONTEXT_MESSAGE_VIEWER_REQUEST) {
-//            message = messageInfo[0].getRequest();
-//        }
-//        else if (context == IContextMenuInvocation.CONTEXT_MESSAGE_EDITOR_RESPONSE || context == IContextMenuInvocation.CONTEXT_MESSAGE_VIEWER_RESPONSE) {
-//            message = messageInfo[0].getResponse();                
-//        }
-//        return message;    
-//    }
     public static String copySelectionData(IContextMenuInvocation contextMenu, boolean selectionTextOnly) {
         String text = null;
         byte context = contextMenu.getInvocationContext();
@@ -292,7 +282,6 @@ public class BurpWrap {
             return (0 <= this.productName.indexOf("Professional"));
         }
 
-
     }
 
     public static String parseFilterPattern(String pattern) {
@@ -314,7 +303,7 @@ public class BurpWrap {
         buff.append(")$");
         return buff.toString();
     }
-    
+
     public static IHttpRequestResponse syncRequest(IHttpService httpService, byte[] request) throws ExecutionException {
         return syncRequest(new TestRequest(httpService, request));
     }
@@ -324,14 +313,15 @@ public class BurpWrap {
             final ExecutorService executor = Executors.newSingleThreadExecutor();
             FutureTask<IHttpRequestResponse> task = new FutureTask(testRequest);
             executor.submit(task);
-            IHttpRequestResponse message = task.get();        
+            IHttpRequestResponse message = task.get();
             return message;
         } catch (InterruptedException ex) {
             throw new ExecutionException(ex);
         }
     }
-    
+
     public static class TestRequest implements Callable<IHttpRequestResponse> {
+
         private IHttpService httpService = null;
         private byte[] request = new byte[0];
 
@@ -354,16 +344,16 @@ public class BurpWrap {
         public IHttpService getHttpService() {
             return this.httpService;
         }
-        
-        public byte [] getRequest() {
+
+        public byte[] getRequest() {
             return this.request;
         }
-        
+
         @Override
         public IHttpRequestResponse call() throws Exception {
             if (callbacks != null) {
-                IHttpRequestResponse message = callbacks.makeHttpRequest(this.httpService, this.request);            
-                return message;            
+                IHttpRequestResponse message = callbacks.makeHttpRequest(this.httpService, this.request);
+                return message;
             }
             return null;
         }

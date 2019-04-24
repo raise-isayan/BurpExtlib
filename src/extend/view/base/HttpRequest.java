@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package extend.view.base;
 
 import burp.IHttpService;
@@ -18,6 +14,7 @@ import java.util.regex.Pattern;
  * @author isayan
  */
 public class HttpRequest extends HttpMessage implements HttpRequestLine {
+
     private Boolean useSSL = null;
     private final static Pattern REQ_URL = Pattern.compile("^([a-zA-Z]+?)\\s+(.*?)\\s+(.*?)$", Pattern.MULTILINE);
     private final static Pattern HOST_HEADER = Pattern.compile("(.*?)(:(\\d+))?", Pattern.MULTILINE);
@@ -26,7 +23,7 @@ public class HttpRequest extends HttpMessage implements HttpRequestLine {
     protected HttpRequest() {
         super();
     }
-    
+
     public HttpRequest(HttpMessage message) throws ParseException {
         super(message);
         this.parseHeader();
@@ -36,7 +33,7 @@ public class HttpRequest extends HttpMessage implements HttpRequestLine {
         this(message);
         this.useSSL = useSSL;
     }
-    
+
     protected void parseHeader() throws ParseException {
         this.requestLine = parseHttpRequestLine(this.getHeader());
     }
@@ -45,7 +42,7 @@ public class HttpRequest extends HttpMessage implements HttpRequestLine {
     public String getRequestLine() {
         return this.requestLine.getRequestLine();
     }
-        
+
     @Override
     public String getMethod() {
         return this.requestLine.getMethod();
@@ -62,25 +59,25 @@ public class HttpRequest extends HttpMessage implements HttpRequestLine {
     }
 
     public String getUrl() {
-        String url = String.format("%s://%s:%d%s", new Object [] { HttpUtil.getDefaultProtocol(this.isSSL()), this.getHost(), this.getPort(), this.getUri() });
+        String url = String.format("%s://%s:%d%s", new Object[]{HttpUtil.getDefaultProtocol(this.isSSL()), this.getHost(), this.getPort(), this.getUri()});
         return HttpUtil.normalizeURL(url);
     }
 
     public String getUrl(boolean useSSL) {
-        String url = String.format("%s://%s:%d%s", new Object [] { HttpUtil.getDefaultProtocol(useSSL), this.getHost(), this.getPort(), this.getUri() });
+        String url = String.format("%s://%s:%d%s", new Object[]{HttpUtil.getDefaultProtocol(useSSL), this.getHost(), this.getPort(), this.getUri()});
         return HttpUtil.normalizeURL(url);
     }
-    
+
     public String getUrl(IHttpService httpService) {
-        String url = String.format("%s://%s:%d%s", new Object [] { httpService.getProtocol(), httpService.getHost(), httpService.getPort(), this.getUri() });
+        String url = String.format("%s://%s:%d%s", new Object[]{httpService.getProtocol(), httpService.getHost(), httpService.getPort(), this.getUri()});
         return HttpUtil.normalizeURL(url);
     }
 
     public static HttpRequestLine parseHttpRequestLine(byte[] message) throws ParseException {
-        String request =  Util.decodeMessage(message);
+        String request = Util.decodeMessage(message);
         return new HttpRequest(parseHttpMessage(request));
     }
-    
+
     public static HttpRequestLine parseHttpRequestLine(String message) throws ParseException {
         final Matcher requestLine = REQ_URL.matcher(message);
         if (!requestLine.find()) {
@@ -105,12 +102,11 @@ public class HttpRequest extends HttpMessage implements HttpRequestLine {
                     URL url;
                     try {
                         url = new URL(path);
-                        return url.getFile();        
+                        return url.getFile();
                     } catch (MalformedURLException ex) {
                         return path;
                     }
-                }
-                else {
+                } else {
                     return path;
                 }
             }
@@ -121,7 +117,7 @@ public class HttpRequest extends HttpMessage implements HttpRequestLine {
             }
         };
     }
-    
+
     public static HttpRequest parseHttpRequest(byte[] message) throws ParseException {
         return new HttpRequest(parseHttpMessage(Util.decodeMessage(message)));
     }
@@ -129,7 +125,7 @@ public class HttpRequest extends HttpMessage implements HttpRequestLine {
     public static HttpRequest parseHttpRequest(byte[] message, boolean useSSL) throws ParseException {
         return new HttpRequest(parseHttpMessage(Util.decodeMessage(message)), useSSL);
     }
-    
+
     public static HttpRequest parseHttpRequest(String message) throws ParseException {
         return new HttpRequest(parseHttpMessage(message));
     }
@@ -137,32 +133,31 @@ public class HttpRequest extends HttpMessage implements HttpRequestLine {
     public static HttpRequest parseHttpRequest(String message, boolean useSSL) throws ParseException {
         return new HttpRequest(parseHttpMessage(message), useSSL);
     }
-    
+
     public static String makeGetRequest(String host, int port, String uri) {
-        return makeGetRequest(host, port, uri, new String [0]);       
+        return makeGetRequest(host, port, uri, new String[0]);
     }
-    
-    public static String makeGetRequest(String host, int port, String uri, String [] headers) {
+
+    public static String makeGetRequest(String host, int port, String uri, String[] headers) {
         StringBuilder buff = new StringBuilder();
         buff.append(String.format("%s %s %s", "GET", uri, "HTTP/1.1"));
         buff.append(HttpMessage.LINE_TERMINATE);
         if (port == 80 || port == 443) {
             buff.append(String.format("%s: %s", "Host", host));
-        }
-        else {
-            buff.append(String.format("%s: %s:%s", "Host", host, port));        
+        } else {
+            buff.append(String.format("%s: %s:%s", "Host", host, port));
         }
         for (String header : headers) {
-            buff.append(String.format("%s", header));                    
+            buff.append(String.format("%s", header));
         }
         buff.append(HttpMessage.LINE_TERMINATE);
         buff.append(HttpMessage.LINE_TERMINATE);
         return buff.toString();
     }
 
-    public static byte [] replaceProxyRequest(byte [] request, String host, int port)     {
+    public static byte[] replaceProxyRequest(byte[] request, String host, int port) {
         String message = Util.decodeMessage(request);
-        StringBuffer buff= new StringBuffer();
+        StringBuffer buff = new StringBuffer();
         Matcher m = REQ_URL.matcher(message);
         if (m.find()) {
             m.appendReplacement(buff, String.format("$1 http://%s:%s$2 $3", host, port));
@@ -170,7 +165,7 @@ public class HttpRequest extends HttpMessage implements HttpRequestLine {
         m.appendTail(buff);
         return Util.encodeMessage(buff.toString());
     }
-    
+
     public String getHostHeader() {
         return this.getHeader("Host");
     }
@@ -182,7 +177,7 @@ public class HttpRequest extends HttpMessage implements HttpRequestLine {
     public String getCookieHeader() {
         return this.getHeader("Cookie");
     }
-        
+
     public String getHost() {
         String value = getHostHeader();
         if (value != null) {
@@ -205,7 +200,7 @@ public class HttpRequest extends HttpMessage implements HttpRequestLine {
         }
         return encType;
     }
-    
+
     public boolean isGET() {
         return this.getMethod().equals("GET");
     }
@@ -213,7 +208,7 @@ public class HttpRequest extends HttpMessage implements HttpRequestLine {
     public boolean isPOST() {
         return this.getMethod().equals("POST");
     }
-    
+
     public boolean isSSL() {
         if (this.useSSL == null) {
             String value = HttpUtil.getHeader("Referer", this.getHeaders());
@@ -222,8 +217,7 @@ public class HttpRequest extends HttpMessage implements HttpRequestLine {
             } else {
                 return false;
             }
-        }
-        else {
+        } else {
             return this.useSSL;
         }
     }
@@ -237,7 +231,7 @@ public class HttpRequest extends HttpMessage implements HttpRequestLine {
             return HttpUtil.getDefaultPort(isSSL());
         }
     }
-    
+
     @Override
     public String getGuessCharset() {
         String charset = super.getGuessCharset();
@@ -246,5 +240,5 @@ public class HttpRequest extends HttpMessage implements HttpRequestLine {
         }
         return normalizeCharset(charset);
     }
-   
+
 }

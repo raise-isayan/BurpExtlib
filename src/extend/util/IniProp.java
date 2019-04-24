@@ -328,7 +328,7 @@ public class IniProp {
         ByteArrayInputStream bin = new ByteArrayInputStream(content.getBytes(charset));
         loadFromXML(bin);
     }
-    
+
     /**
      * プロパティファイルの読み込みを行う
      *
@@ -446,17 +446,18 @@ public class IniProp {
 
     /**
      * XMLファイルの書き込み処理
+     *
      * @param comment
      * @param encoding
      * @return XML
-     * @throws IOException 
+     * @throws IOException
      */
     public String storeToXML(String comment, String encoding) throws IOException {
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
         storeToXML(bout, comment, encoding);
         return new String(bout.toByteArray(), encoding);
     }
-    
+
     /**
      * XMLファイルの書き込み処理
      *
@@ -469,7 +470,6 @@ public class IniProp {
         this.storeToXML(new File(filename), comment, encoding);
     }
 
-    
     /**
      * プロパティファイルの書き込み処理
      *

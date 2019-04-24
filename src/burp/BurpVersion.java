@@ -21,5 +21,5 @@ public interface BurpVersion {
     public boolean isExtendSupport();
 
     public boolean isProfessional();
-    
+
 }

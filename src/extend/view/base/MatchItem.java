@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package extend.view.base;
 
 import java.awt.Color;
@@ -23,7 +19,7 @@ public class MatchItem extends RegexItem {
 
     public enum TargetTool {
 
-        PROXY, REPEATER, SPIDER, INTRUDER, SCANNER, SEQUENCER;
+        PROXY, SPIDER, SCANNER, INTRUDER, REPEATER, SEQUENCER, EXTENDER;
 
         public static TargetTool parseValue(String value) {
             TargetTool eval = (TargetTool) Util.parseEnumValue(TargetTool.class, value);
@@ -40,7 +36,7 @@ public class MatchItem extends RegexItem {
             EnumSet<TargetTool> values = EnumSet.noneOf(TargetTool.class);
             Matcher m = ENUM_SPLIT.matcher(s.toUpperCase());
             while (m.find()) {
-                values.add((TargetTool)Util.parseEnumValue(TargetTool.class, m.group()));
+                values.add((TargetTool) Util.parseEnumValue(TargetTool.class, m.group()));
             }
             return values;
         }
@@ -71,7 +67,7 @@ public class MatchItem extends RegexItem {
             EnumSet<NotifyType> values = EnumSet.noneOf(NotifyType.class);
             Matcher m = ENUM_SPLIT.matcher(s.toUpperCase());
             while (m.find()) {
-                values.add((NotifyType)Util.parseEnumValue(NotifyType.class, m.group()));
+                values.add((NotifyType) Util.parseEnumValue(NotifyType.class, m.group()));
             }
             return values;
         }
@@ -138,7 +134,7 @@ public class MatchItem extends RegexItem {
             EnumSet<HighlightColor> values = EnumSet.noneOf(HighlightColor.class);
             Matcher m = ENUM_SPLIT.matcher(s.toUpperCase());
             while (m.find()) {
-                values.add((HighlightColor)Util.parseEnumValue(HighlightColor.class, m.group()));
+                values.add((HighlightColor) Util.parseEnumValue(HighlightColor.class, m.group()));
             }
             return values;
         }
@@ -156,8 +152,10 @@ public class MatchItem extends RegexItem {
         @Override
         public String toString() {
             char ch[] = name().toLowerCase().toCharArray();
-            if (ch.length > 0) ch[0] = Character.toUpperCase(ch[0]);
-            String value =  new String(ch);
+            if (ch.length > 0) {
+                ch[0] = Character.toUpperCase(ch[0]);
+            }
+            String value = new String(ch);
             return value.replace('_', ' ');
         }
 
@@ -174,8 +172,10 @@ public class MatchItem extends RegexItem {
         @Override
         public String toString() {
             char ch[] = name().toLowerCase().toCharArray();
-            if (ch.length > 0) ch[0] = Character.toUpperCase(ch[0]);
-            String value =  new String(ch);
+            if (ch.length > 0) {
+                ch[0] = Character.toUpperCase(ch[0]);
+            }
+            String value = new String(ch);
             return value.replace('_', ' ');
         }
 

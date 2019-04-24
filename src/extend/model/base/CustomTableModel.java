@@ -114,10 +114,12 @@ public class CustomTableModel extends DefaultTableModel {
     public static String tableCopy(JTable table) {
         StringBuffer buffer = new StringBuffer();
         int[] rowsSelected = table.getSelectedRows();
-        int[] colsSelected = table.getSelectedColumns();        
-        for(int i = 0; i < rowsSelected.length; i++) {
-            for(int j = 0; j < colsSelected.length; j++) {
-                if(0 < j) buffer.append("\t");
+        int[] colsSelected = table.getSelectedColumns();
+        for (int i = 0; i < rowsSelected.length; i++) {
+            for (int j = 0; j < colsSelected.length; j++) {
+                if (0 < j) {
+                    buffer.append("\t");
+                }
                 buffer.append(table.getValueAt(rowsSelected[i], colsSelected[j]));
             }
             buffer.append(System.lineSeparator());
@@ -126,14 +128,13 @@ public class CustomTableModel extends DefaultTableModel {
     }
 
     private boolean lockUpdate = false;
-    
-    public synchronized void beginUpdate()
-    {
+
+    public synchronized void beginUpdate() {
         this.lockUpdate = true;
-    }    
+    }
 
     public synchronized void endUpdate() {
-        this.lockUpdate = false;    
+        this.lockUpdate = false;
     }
 
     @Override

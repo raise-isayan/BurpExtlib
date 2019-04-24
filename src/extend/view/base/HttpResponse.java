@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package extend.view.base;
 
 import extend.util.HttpUtil;
@@ -15,13 +11,14 @@ import java.util.regex.Pattern;
  * @author isayan
  */
 public class HttpResponse extends HttpMessage implements HttpStatusLine {
+
     private final static Pattern RES_STATUS = Pattern.compile("^(.*?)\\s+(\\d+)\\s+(.*?)$", Pattern.MULTILINE);
     private HttpStatusLine statusLine;
 
     protected HttpResponse() {
         super();
     }
-    
+
     public HttpResponse(HttpMessage message) throws ParseException {
         super(message);
         this.parseHeader();
@@ -35,7 +32,7 @@ public class HttpResponse extends HttpMessage implements HttpStatusLine {
     public String getStatusLine() {
         return this.statusLine.getStatusLine();
     }
-        
+
     @Override
     public String getProtocolVersion() {
         return this.statusLine.getProtocolVersion();
@@ -72,7 +69,7 @@ public class HttpResponse extends HttpMessage implements HttpStatusLine {
         String request = Util.decodeMessage(message);
         return parseHttpStatusLine(request);
     }
-    
+
     public static HttpStatusLine parseHttpStatusLine(String message) throws ParseException {
         final Matcher statusLine = RES_STATUS.matcher(message);
         if (!statusLine.find()) {
@@ -92,7 +89,7 @@ public class HttpResponse extends HttpMessage implements HttpStatusLine {
 
             @Override
             public short getStatusCode() {
-                return (short)Util.parseIntDefault(statusLine.group(2), 0);
+                return (short) Util.parseIntDefault(statusLine.group(2), 0);
             }
 
             @Override
@@ -102,7 +99,7 @@ public class HttpResponse extends HttpMessage implements HttpStatusLine {
 
         };
     }
-    
+
     public static HttpResponse parseHttpResponse(byte[] message) throws ParseException {
         return new HttpResponse(parseHttpMessage(Util.decodeMessage(message)));
     }
@@ -110,6 +107,5 @@ public class HttpResponse extends HttpMessage implements HttpStatusLine {
     public static HttpResponse parseHttpResponse(String message) throws ParseException {
         return new HttpResponse(parseHttpMessage(message));
     }
-
 
 }

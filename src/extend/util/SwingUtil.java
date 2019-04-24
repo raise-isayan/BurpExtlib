@@ -34,18 +34,18 @@ public final class SwingUtil {
     }
 
     private static Robot robot = null;
-    
+
     public static synchronized Robot getRobot() {
         try {
             if (robot == null) {
-                robot = new Robot();        
+                robot = new Robot();
             }
         } catch (AWTException ex) {
             Logger.getLogger(SwingUtil.class.getName()).log(Level.SEVERE, null, ex);
-        }  
+        }
         return robot;
     }
-    
+
     /**
      * 行の追加または更新
      *
@@ -65,11 +65,11 @@ public final class SwingUtil {
         TableModel modelSrc = srcTable.getModel();
         int lastIndex = modelSrc.getRowCount() - 1;
         if (modelSrc instanceof DefaultTableModel) {
-            ((DefaultTableModel)modelSrc).addRow(items);
+            ((DefaultTableModel) modelSrc).addRow(items);
         }
-//        else if (modelSrc instanceof DefaultObjectTableModel) {
-//            ((DefaultObjectTableModel)modelSrc).addRow(items);
-//        }
+        //        else if (modelSrc instanceof DefaultObjectTableModel) {
+        //            ((DefaultObjectTableModel)modelSrc).addRow(items);
+        //        }
         else {
             throw new java.lang.ClassCastException("class cast Excaption:" + modelSrc.getClass().getName());
         }
@@ -82,13 +82,12 @@ public final class SwingUtil {
         if (-1 < index && index < srcTable.getRowCount()) {
             int rowIndex = srcTable.convertRowIndexToModel(index);
             if (modelSrc instanceof DefaultTableModel) {
-                ((DefaultTableModel)modelSrc).insertRow(rowIndex, items);
+                ((DefaultTableModel) modelSrc).insertRow(rowIndex, items);
             }
 //            else {
 //                throw new java.lang.ClassCastException("class cast Excaption:" + modelSrc.getClass().getName());
 //            }                
-        }
-        else {
+        } else {
             throw new java.lang.ClassCastException("class cast Excaption:" + modelSrc.getClass().getName());
         }
     }
@@ -99,18 +98,18 @@ public final class SwingUtil {
         if (-1 < index && index < srcTable.getRowCount()) {
             int rowIndex = srcTable.convertRowIndexToModel(index);
             if (modelSrc instanceof DefaultTableModel) {
-                ((DefaultTableModel)modelSrc).removeRow(rowIndex);
-                ((DefaultTableModel)modelSrc).insertRow(rowIndex, items);
+                ((DefaultTableModel) modelSrc).removeRow(rowIndex);
+                ((DefaultTableModel) modelSrc).insertRow(rowIndex, items);
             }
-//            else if (modelSrc instanceof DefaultObjectTableModel) {
-//                ((DefaultObjectTableModel)modelSrc).removeRow(rowIndex);
-//                ((DefaultObjectTableModel)modelSrc).insertRow(rowIndex, items);                
-//            }            
+            //            else if (modelSrc instanceof DefaultObjectTableModel) {
+            //                ((DefaultObjectTableModel)modelSrc).removeRow(rowIndex);
+            //                ((DefaultObjectTableModel)modelSrc).insertRow(rowIndex, items);                
+            //            }            
             else {
                 throw new java.lang.ClassCastException("class cast Excaption:" + modelSrc.getClass().getName());
             }
             srcTable.getSelectionModel().setSelectionInterval(rowIndex, rowIndex);
-        }        
+        }
     }
 
     public static void updateItem(javax.swing.JTable srcTable, Object[] items) {
@@ -123,12 +122,10 @@ public final class SwingUtil {
         if (index > -1) {
             int rowIndex = srcTable.convertRowIndexToModel(index);
             if (modelSrc instanceof DefaultTableModel) {
-                ((DefaultTableModel)modelSrc).removeRow(rowIndex);
-            }
-            else if (modelSrc instanceof DefaultObjectTableModel) {
-                ((DefaultObjectTableModel)modelSrc).removeRow(rowIndex);
-            }
-            else {
+                ((DefaultTableModel) modelSrc).removeRow(rowIndex);
+            } else if (modelSrc instanceof DefaultObjectTableModel) {
+                ((DefaultObjectTableModel) modelSrc).removeRow(rowIndex);
+            } else {
                 throw new java.lang.ClassCastException("class cast Excaption:" + modelSrc.getClass().getName());
             }
             return true;
@@ -149,7 +146,7 @@ public final class SwingUtil {
         }
         return editRows;
     }
-    
+
     public static void allNodesChanged(JTree tree) {
         DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
@@ -160,31 +157,35 @@ public final class SwingUtil {
                 TreeNode node = (TreeNode) element;
                 model.nodeChanged(node);
             }
-        }        
+        }
     }
-    
+
     public static void expandAll(JTree tree, TreePath path) {
-         Object node = path.getLastPathComponent();
-	TreeModel model = tree.getModel();
-	if (model.isLeaf(node))
-		return;
-	int num = model.getChildCount(node);
-	for (int i = 0; i < num; i++)
+        Object node = path.getLastPathComponent();
+        TreeModel model = tree.getModel();
+        if (model.isLeaf(node)) {
+            return;
+        }
+        int num = model.getChildCount(node);
+        for (int i = 0; i < num; i++) {
             expandAll(tree, path.pathByAddingChild(model.getChild(node, i)));
-	tree.expandPath(path);
+        }
+        tree.expandPath(path);
     }
 
     public static void collapseAll(JTree tree, TreePath path) {
         Object node = path.getLastPathComponent();
-	TreeModel model = tree.getModel();
-	if (model.isLeaf(node))
-		return;
-	int num = model.getChildCount(node);
-	for (int i = 0; i < num; i++)
+        TreeModel model = tree.getModel();
+        if (model.isLeaf(node)) {
+            return;
+        }
+        int num = model.getChildCount(node);
+        for (int i = 0; i < num; i++) {
             collapseAll(tree, path.pathByAddingChild(model.getChild(node, i)));
-	tree.collapsePath(path);
+        }
+        tree.collapsePath(path);
     }
-        
+
     public static void setContainerEnable(Container container, boolean enabled) {
         Component[] list = container.getComponents();
         for (Component c : list) {
@@ -196,7 +197,7 @@ public final class SwingUtil {
             }
         }
     }
-    
+
     /**
      * ファイル上書き確認ダイアログを表示する。
      *
@@ -283,8 +284,9 @@ public final class SwingUtil {
             }
         };
     }
-    
+
     public static class IntegerDocument extends PlainDocument {
+
         int currentValue = 0;
 
         public IntegerDocument() {
@@ -355,14 +357,13 @@ public final class SwingUtil {
 
     }
 
-    
-    private static Toolkit toolkit = Toolkit.getDefaultToolkit();
+    private static final Toolkit TOOLKIT = Toolkit.getDefaultToolkit();
 
     public static String systemSelection() {
 
         String selection = null;
         try {
-            Clipboard cb = toolkit.getSystemSelection();
+            Clipboard cb = TOOLKIT.getSystemSelection();
             if (cb != null) {
                 Transferable t = cb.getContents(null);
                 selection = (String) t.getTransferData(DataFlavor.stringFlavor);
@@ -382,7 +383,7 @@ public final class SwingUtil {
      */
     public static void systemClipboardCopy(String s) {
         StringSelection ss = new StringSelection(s);
-        Clipboard systemClipbord = toolkit.getSystemClipboard();
+        Clipboard systemClipbord = TOOLKIT.getSystemClipboard();
         systemClipbord.setContents(ss, null);
     }
 
@@ -392,7 +393,7 @@ public final class SwingUtil {
      * @return s 文字列
      */
     public static String systemClipboardPaste() {
-        Clipboard systemClipbord = toolkit.getSystemClipboard();
+        Clipboard systemClipbord = TOOLKIT.getSystemClipboard();
         Transferable t = systemClipbord.getContents(null);
         String s = "";
         try {
@@ -411,37 +412,37 @@ public final class SwingUtil {
     }
 
     public static void showToolTip(Component owner, String tip, int x, int y, long millis) {
-            Popup popTip = createToolTip(owner, tip, x, y);
-            Runnable thread = new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        popTip.show();
-                        Thread.sleep(millis);
-                        popTip.hide();
-                    } catch (InterruptedException ex) {
-                    }        
-                }            
-            }; 
-            (new Thread(thread)).start();
+        Popup popTip = createToolTip(owner, tip, x, y);
+        Runnable thread = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    popTip.show();
+                    Thread.sleep(millis);
+                    popTip.hide();
+                } catch (InterruptedException ex) {
+                }
+            }
+        };
+        (new Thread(thread)).start();
     }
 
     public static String getKeyText(java.awt.event.KeyEvent evt) {
-        StringBuffer keyIdent = new StringBuffer();
+        StringBuilder keyIdent = new StringBuilder();
         keyIdent.append(java.awt.event.KeyEvent.getKeyModifiersText(evt.getModifiers()));
         if (evt.getKeyCode() != java.awt.event.KeyEvent.CHAR_UNDEFINED
-            && evt.getKeyCode() != java.awt.event.KeyEvent.VK_CONTROL
-            && evt.getKeyCode() != java.awt.event.KeyEvent.VK_SHIFT
-            && evt.getKeyCode() != java.awt.event.KeyEvent.VK_ALT
-            && evt.getKeyCode() != java.awt.event.KeyEvent.VK_META) {
+                && evt.getKeyCode() != java.awt.event.KeyEvent.VK_CONTROL
+                && evt.getKeyCode() != java.awt.event.KeyEvent.VK_SHIFT
+                && evt.getKeyCode() != java.awt.event.KeyEvent.VK_ALT
+                && evt.getKeyCode() != java.awt.event.KeyEvent.VK_META) {
             if (keyIdent.length() > 0) {
-                keyIdent.append("+");            
+                keyIdent.append("+");
             }
             keyIdent.append(java.awt.event.KeyEvent.getKeyText(evt.getKeyCode()));
         }
-        return keyIdent.toString();    
+        return keyIdent.toString();
     }
-            
+
     public static void sendKeys(int key) {
         getRobot().keyPress(key);
         getRobot().keyRelease(key);
@@ -451,5 +452,5 @@ public final class SwingUtil {
         getRobot().mousePress(buttons);
         getRobot().mouseRelease(buttons);
     }
-    
+
 }

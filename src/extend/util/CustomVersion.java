@@ -5,6 +5,7 @@ package extend.util;
  * @author isayan
  */
 public class CustomVersion {
+
     private static int MAJOR_VERSION = 0;
     private static int MINOR_VERSION = 0;
     private static int REVISION_VERSION = 0;
@@ -70,5 +71,5 @@ public class CustomVersion {
     public String getVersion() {
         return String.format("%d.%d.%d.%d", MAJOR_VERSION, MINOR_VERSION, REVISION_VERSION, RELEASE_NUMBER);
     }
-    
+
 }

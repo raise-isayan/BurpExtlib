@@ -15,7 +15,7 @@ public class BurpExtenderImpl implements IBurpExtender {
     private static BurpExtenderImpl extenderImpl;
     private static IBurpExtenderCallbacks callbacks;
     private BurpVersion burp_version = null;
-    
+
     @Override
     public void registerExtenderCallbacks(IBurpExtenderCallbacks cb) {
         extenderImpl = this;
@@ -24,15 +24,15 @@ public class BurpExtenderImpl implements IBurpExtender {
         burp_version = new BurpWrap.Version(cb);
         return;
     }
-    
+
     public static <T extends BurpExtenderImpl> T getInstance() {
-        return (T)extenderImpl;
+        return (T) extenderImpl;
     }
 
     public static IBurpExtenderCallbacks getCallbacks() {
         return callbacks;
     }
-    
+
     public static IExtensionHelpers getHelpers() {
         if (callbacks != null) {
             try {
@@ -47,11 +47,11 @@ public class BurpExtenderImpl implements IBurpExtender {
             return null;
         }
     }
-    
-    public BurpVersion getBurpVersion () {
+
+    public BurpVersion getBurpVersion() {
         return burp_version;
     }
-    
+
     public static void outPrintln(String message) throws IOException {
         outPrint(message + "\n");
     }
@@ -84,5 +84,5 @@ public class BurpExtenderImpl implements IBurpExtender {
             callbacks.issueAlert(String.format("[%s] %s:%s", messageType, caption, text));
         }
     }
-    
+
 }

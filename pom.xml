@@ -6,22 +6,23 @@
 
 	<groupId>burp</groupId>
 	<artifactId>BurpExtlib</artifactId>
-	<packaging>jar</packaging>
 	<name>BurpExtlib</name>
 	<version>1.0</version>
 	<description>BurpExtlib</description>
+	<packaging>jar</packaging>
 
 	<properties>
 		<category>BurpExtlib</category>
 		<title>BurpExtlib</title>
-        <java.version>1.8</java.version>
-        <maven.compiler.target>${java.version}</maven.compiler.target>
-        <maven.compiler.source>${java.version}</maven.compiler.source>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java.version>1.8</java.version>
+		<maven.compiler.target>${java.version}</maven.compiler.target>
+		<maven.compiler.source>${java.version}</maven.compiler.source>
 	</properties>
 
 	<build>
-  		<sourceDirectory>${project.basedir}/src/</sourceDirectory>
-  		<plugins>
+		<sourceDirectory>${project.basedir}/src/</sourceDirectory>
+		<plugins>
 			<plugin>
 				<groupId>BurpExtlib</groupId>
 				<artifactId>burp.burpExtlib</artifactId>

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package extend.view.base;
 
 import java.awt.AWTEvent;
@@ -17,6 +13,7 @@ import javax.swing.event.EventListenerList;
  * @author isayan
  */
 public class CustomDialog extends javax.swing.JDialog {
+
     public static String OK_OPTION = "OK_OPTION";
     public static String CANCEL_OPTION = "CANCEL_OPTION";
 

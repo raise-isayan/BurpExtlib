@@ -1,6 +1,5 @@
 package extend.view.base;
 
-import burp.IHttpService;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.util.logging.Level;

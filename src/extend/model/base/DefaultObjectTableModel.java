@@ -28,15 +28,15 @@ public class DefaultObjectTableModel<T extends ObjectTableMapping> extends Abstr
             public int getColumnCount() {
                 return table.getColumnCount();
             }
-        
+
         });
     }
 
     public DefaultObjectTableModel(ObjectTableColumn column) {
         this.columns = column;
-        this.data = new ArrayList<T>();        
+        this.data = new ArrayList<T>();
     }
-    
+
     public T getData(int row) {
         return this.data.get(row);
     }
@@ -72,7 +72,7 @@ public class DefaultObjectTableModel<T extends ObjectTableMapping> extends Abstr
         }
         return index;
     }
-        
+
     public void addRow(T rowData) {
         insertRow(getRowCount(), rowData);
     }
@@ -131,7 +131,7 @@ public class DefaultObjectTableModel<T extends ObjectTableMapping> extends Abstr
             fireTableRowsDeleted(0, lastRow);
         }
     }
-    
+
     //
     // Implementing the TableModel interface
     //
@@ -154,13 +154,12 @@ public class DefaultObjectTableModel<T extends ObjectTableMapping> extends Abstr
     public Class<?> getColumnClass(int columnIndex) {
         return this.columns.getColumnClass(columnIndex);
     }
-    
+
     @Override
     public boolean isCellEditable(int row, int column) {
         if (this.editable) {
             return this.data.get(row).isCellEditable(column);
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -175,11 +174,11 @@ public class DefaultObjectTableModel<T extends ObjectTableMapping> extends Abstr
     public void setValueAt(Object aValue, int row, int column) {
         T obj = this.data.get(row);
         obj.setObject(column, aValue);
-        fireTableCellUpdated(row, column);        
+        fireTableCellUpdated(row, column);
     }
-    
+
     private boolean editable = false;
-    
+
     public void setCellEditable(boolean editable) {
         this.editable = editable;
     }
@@ -188,15 +187,14 @@ public class DefaultObjectTableModel<T extends ObjectTableMapping> extends Abstr
         return this.editable;
     }
 
-        private boolean lockUpdate = false;
-    
-    public synchronized void beginUpdate()
-    {
+    private boolean lockUpdate = false;
+
+    public synchronized void beginUpdate() {
         this.lockUpdate = true;
-    }    
+    }
 
     public synchronized void endUpdate() {
-        this.lockUpdate = false;    
+        this.lockUpdate = false;
     }
 
     @Override

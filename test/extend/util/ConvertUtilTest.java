@@ -3,6 +3,7 @@ package extend.util;
 import java.io.UnsupportedEncodingException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -83,13 +84,16 @@ public class ConvertUtilTest {
             String expResult = "aa\\.com";
             String result = ConvertUtil.regexQuote(target);
             assertEquals(expResult, result);
+            Pattern ptn1 = Pattern.compile(result);
+            assertTrue(ptn1.matcher(target).matches());
         }
         {
             String target = "\\/{}<>[]()";
-            String expResult = "\\\\/\\{\\}<>\\[\\]\\(\\)";
+            String expResult = "\\\\/\\{\\}\\<\\>\\[\\]\\(\\)";
             String result = ConvertUtil.regexQuote(target);
             assertEquals(expResult, result);
-        
+            Pattern ptn2 = Pattern.compile(result);
+            assertTrue(ptn2.matcher(target).matches());       
         }
     
     }
@@ -139,6 +143,5 @@ public class ConvertUtilTest {
             assertTrue(false);
         }
     }
-
     
 }

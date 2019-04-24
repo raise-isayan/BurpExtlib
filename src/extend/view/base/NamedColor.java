@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package extend.view.base;
 
 import extend.util.Util;
@@ -43,12 +39,12 @@ public class NamedColor extends Color implements Comparable<NamedColor> {
     @Override
     public int compareTo(NamedColor o) {
         try {
-            int parseIntA = Integer.valueOf(name);        
+            int parseIntA = Integer.valueOf(name);
             int parseIntB = Integer.valueOf(o.name);
             return parseIntA - parseIntB;
         } catch (NumberFormatException e) {
             return Util.compareToString(name, o.name);
         }
     }
-        
+
 }
