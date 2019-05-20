@@ -20,19 +20,25 @@ public class IpUtil {
     private final static long CLASS_B_NET = 0xAC100000L; // 172.16.0.0/12
     private final static long CLASS_C_MASK = 0xFFFF0000L;
     private final static long CLASS_C_NET = 0xC0A80000L; // 192.168.0.0/16
-
+    private final static long LINK_LOCAL_MASK = 0xFFFF0000L;
+    private final static long LINK_LOCAL_NET = 0x0A9FE0000L; // 169.254.0.0/16
+       
     public static boolean isPrivateIP(String ip_addr) throws ParseException {
         // portを分離
         String ip[] = ip_addr.split(":", 2);
         long ip_decimal = IPv4ToDecimal(ip[0], ByteOrder.BIG_ENDIAN);
-        if (((ip_decimal & CLASS_A_MASK) == CLASS_A_NET)
+        return ((ip_decimal & CLASS_A_MASK) == CLASS_A_NET)
                 || ((ip_decimal & CLASS_B_MASK) == CLASS_B_NET)
-                || ((ip_decimal & CLASS_C_MASK) == CLASS_C_NET)) {
-            return true;
-        }
-        return false;
+                || ((ip_decimal & CLASS_C_MASK) == CLASS_C_NET);
     }
 
+    public static boolean isLinkLocalIP(String ip_addr) throws ParseException {
+        // portを分離
+        String ip[] = ip_addr.split(":", 2);
+        long ip_decimal = IPv4ToDecimal(ip[0], ByteOrder.BIG_ENDIAN);
+        return ((ip_decimal & LINK_LOCAL_MASK) == LINK_LOCAL_NET);
+    }
+    
     public static long IPv4ToDecimal(String ip_addr, ByteOrder order) throws ParseException {
         Matcher m = IPv4_ADDR.matcher(ip_addr);
         if (m.matches()) {

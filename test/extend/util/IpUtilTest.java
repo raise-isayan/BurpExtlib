@@ -78,6 +78,34 @@ public class IpUtilTest {
             fail(ex.getMessage());
         }
     }
+
+    /**
+     * Test of isLinkLocalIP method, of class IpUtil.
+     */
+    @Test
+    public void testIsLinkLocalIP() {
+        System.out.println("isLinkLocalIP");
+        try {
+            // class A Private IP
+            assertEquals(IpUtil.isLinkLocalIP("10.168.2.1"), false);
+            // class B Private IP
+            assertEquals(IpUtil.isLinkLocalIP("172.16.2.1"), false);
+            // class C Private IP
+            assertEquals(IpUtil.isLinkLocalIP("192.168.2.1"), false);
+            
+            assertEquals(IpUtil.isLinkLocalIP("8.8.8.8"), false);
+
+            assertEquals(IpUtil.isLinkLocalIP("1.1.1.1"), false);
+
+            assertEquals(IpUtil.isLinkLocalIP("255.255.255.1"), false);
+
+            assertEquals(IpUtil.isLinkLocalIP("169.254.0.1"), true);
+            
+            
+        } catch (ParseException ex) {
+            fail(ex.getMessage());
+        }
+    }
     
     /**
      * Test of IPv4ToDecimal method, of class IpUtil.
