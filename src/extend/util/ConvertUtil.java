@@ -11,6 +11,8 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.GZIPInputStream;
@@ -31,6 +33,17 @@ import org.w3c.dom.Text;
  */
 public final class ConvertUtil {
 
+    public static String newLine(String separator, String value, int length) {
+        Pattern p = Pattern.compile(String.format("(.{%d})", length));
+        StringBuffer sb = new StringBuffer();
+        Matcher m = p.matcher(value);
+        while (m.find()) {
+            m.appendReplacement(sb, m.group(1) + separator);
+        }
+        m.appendTail(sb);
+        return sb.toString();
+    }
+    
     public static String toBase64Encode(String src, Charset charset)
             throws UnsupportedEncodingException {
         return toBase64Encode(src, charset, true);
