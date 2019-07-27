@@ -110,23 +110,31 @@ public class CustomTableModel extends DefaultTableModel {
         }
         return editRows;
     }
-
+    
     public static String tableCopy(JTable table) {
+        return tableCopy(table, false);
+    }
+
+    public static String tableCopy(JTable table, boolean visible) {
         StringBuffer buffer = new StringBuffer();
         int[] rowsSelected = table.getSelectedRows();
         int[] colsSelected = table.getSelectedColumns();
         for (int i = 0; i < rowsSelected.length; i++) {
+            int cnt = 0;
             for (int j = 0; j < colsSelected.length; j++) {
-                if (0 < j) {
+                if (0 < cnt) {
                     buffer.append("\t");
                 }
-                buffer.append(table.getValueAt(rowsSelected[i], colsSelected[j]));
+                if (visible && table.getColumnModel().getColumn(colsSelected[j]).getPreferredWidth() > 0) {
+                    buffer.append(table.getValueAt(rowsSelected[i], colsSelected[j]));
+                    cnt++;                
+                }
             }
             buffer.append(System.lineSeparator());
         }
-        return buffer.toString();
+        return buffer.toString();        
     }
-
+    
     private boolean lockUpdate = false;
 
     public synchronized void beginUpdate() {
