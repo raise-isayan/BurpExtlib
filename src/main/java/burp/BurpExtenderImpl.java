@@ -22,9 +22,9 @@ public class BurpExtenderImpl implements IBurpExtender {
         callbacks = cb;
         BurpWrap.assained(cb);
         burp_version = new BurpWrap.Version(cb);
-        return;
     }
 
+    @SuppressWarnings("unchecked")
     public static <T extends BurpExtenderImpl> T getInstance() {
         return (T) extenderImpl;
     }

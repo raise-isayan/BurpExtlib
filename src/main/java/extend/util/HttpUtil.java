@@ -219,7 +219,7 @@ public final class HttpUtil {
     }
 
     public static String[] extractHTMLComments(String message, boolean uniqe) {
-        ArrayList<String> list = new ArrayList<String>();
+        ArrayList<String> list = new ArrayList<>();
         // Create matcher 
         Matcher matcher = HTML_COMMENT.matcher(message);
         while (matcher.find()) {
@@ -227,7 +227,7 @@ public final class HttpUtil {
             list.add(comment);
         }
         if (uniqe) {
-            List uniqList = Util.toUniqList(list);
+            List<String> uniqList = Util.toUniqList(list);
             return (String[]) uniqList.toArray(new String[0]);
         } else {
             return list.toArray(new String[0]);
@@ -284,18 +284,18 @@ public final class HttpUtil {
     public static Map.Entry<String, String> getParameter(String plain) {
         String s[] = plain.split("=", 2);
         if (s.length == 1) {
-            return new AbstractMap.SimpleEntry<String, String>(s[0], "");
+            return new AbstractMap.SimpleEntry<>(s[0], "");
         } else {
-            return new AbstractMap.SimpleEntry<String, String>(s[0], s[1]);
+            return new AbstractMap.SimpleEntry<>(s[0], s[1]);
         }
     }
 
-    public static Map.Entry getHeader(String plain) {
+    public static Map.Entry<String, String> getHeader(String plain) {
         String s[] = plain.split(":", 2);
         if (s.length == 1) {
-            return new AbstractMap.SimpleEntry(s[0], "");
+            return new AbstractMap.SimpleEntry<>(s[0], "");
         } else {
-            return new AbstractMap.SimpleEntry(s[0], s[1].trim());
+            return new AbstractMap.SimpleEntry<>(s[0], s[1].trim());
         }
     }
 
@@ -540,4 +540,36 @@ public final class HttpUtil {
         }
     }
 
+    public static String toHtmlEncode(String input) {
+        StringBuilder buff = new StringBuilder();
+        int length = input.length();
+        for (int i = 0; i < length; i++) {
+            char c = input.charAt(i);
+            buff.append(toHtmlEncode(c));
+        }
+        return buff.toString();
+    }
+
+    public static String toHtmlEncode(char c) {
+        StringBuilder buff = new StringBuilder();
+        switch (c) {
+            case '<':
+                buff.append("&lt;");
+                break;
+            case '>':
+                buff.append("&gt;");
+                break;
+            case '&':
+                buff.append("&amp;");
+                break;
+            case '"':
+                buff.append("&quot;");
+                break;
+            default:
+                buff.append(c);
+                break;
+        }
+        return buff.toString();
+    }
+    
 }

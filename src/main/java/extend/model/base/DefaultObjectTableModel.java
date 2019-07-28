@@ -86,6 +86,7 @@ public class DefaultObjectTableModel<T extends ObjectTableMapping> extends Abstr
         return (j == 0) ? i : gcd(j, i % j);
     }
 
+    @SuppressWarnings("unchecked")
     private static void rotate(List v, int a, int b, int shift) {
         int size = b - a;
         int r = size - shift;

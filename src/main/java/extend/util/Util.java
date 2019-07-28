@@ -120,6 +120,7 @@ public final class Util {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public static Enum parseEnumValue(Class enumType, String value) {
         if (value != null) {
             value = value.toUpperCase();

@@ -45,7 +45,7 @@ public class CustomListModel extends DefaultListModel {
     }
 
     public List toList() {
-        List<Object> list = new ArrayList<Object>();
+        List<Object> list = new ArrayList<>();
         for (int index = 0; index < this.size(); index++) {
             list.add(this.getElementAt(index));
         }

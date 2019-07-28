@@ -52,11 +52,11 @@ public class UtilTest {
     @Test
     public void testURL() {
         try {
-            URL u = new URL("http://192.168.50.130/cgi-bin/multienc.cgi");
+            URL u = new URL("http://192.0.2.11/cgi-bin/multienc.cgi");
             System.out.println("url:" + u.toString());
             System.out.println("url:" + u.toExternalForm());
 
-            URL u2 = new URL("http://192.168.50.130:80/cgi-bin/multienc.cgi");
+            URL u2 = new URL("http://192.0.2.11:80/cgi-bin/multienc.cgi");
             System.out.println("url2:" + u2.toString());
             System.out.println("url2:" + u2.toExternalForm());
             System.out.println("url3:" + u2.toURI().normalize().toString());
@@ -71,8 +71,8 @@ public class UtilTest {
      */
     @Test
     public void testMatch() {
-        Pattern p = Pattern.compile("http://192.168.50.130/cgi-bin/multienc.cgi");
-        Matcher m = p.matcher("http://192.168.50.130/cgi-bin/multienc.cgi?charset=EUC-JP");
+        Pattern p = Pattern.compile("http://192.0.2.11/cgi-bin/multienc.cgi");
+        Matcher m = p.matcher("http://192.0.2.11/cgi-bin/multienc.cgi?charset=EUC-JP");
         if (m.matches()) {
             System.out.println("match");
         }
@@ -116,6 +116,5 @@ public class UtilTest {
             System.out.println(l);
         }
     }
-            
-    
+                
 }

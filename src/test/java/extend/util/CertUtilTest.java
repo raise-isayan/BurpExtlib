@@ -1,7 +1,5 @@
 package extend.util;
 
-import extend.util.Util;
-import extend.util.CertUtil;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
@@ -17,10 +15,11 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  *
- * @author t.isayama
+ * @author isayan
  */
 public class CertUtilTest {
 
@@ -43,51 +42,6 @@ public class CertUtilTest {
     public void tearDown() {
     }
 
-//    /**
-//     * Test of loadFromKeyPKCS12 method, of class CertUtil.
-//     */
-//    @Test
-//    public void testLoadFromKeyPKCS12() throws Exception {
-//        System.out.println("loadFromKeyPKCS12");
-//        File storeFile = null;
-//        String password = "";
-//        HashMap<String, CertificateInKey> expResult = null;
-//        HashMap<String, CertificateInKey> result = CertUtil.loadFromKeyPKCS12(storeFile, password);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of loadFromKeyJKS method, of class CertUtil.
-//     */
-//    @Test
-//    public void testLoadFromKeyJKS() throws Exception {
-//        System.out.println("loadFromKeyJKS");
-//        File storeFile = null;
-//        String password = "";
-//        HashMap<String, CertificateInKey> expResult = null;
-//        HashMap<String, CertificateInKey> result = CertUtil.loadFromKeyJKS(storeFile, password);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of loadFromKeyStore method, of class CertUtil.
-//     */
-//    @Test
-//    public void testLoadFromKeyStore() throws Exception {
-//        System.out.println("loadFromKeyStore");
-//        File storeFile = null;
-//        String keyPassword = "";
-//        String storeType = "";
-//        HashMap<String, CertificateInKey> expResult = null;
-//        HashMap<String, CertificateInKey> result = CertUtil.loadFromKeyStore(storeFile, keyPassword, storeType);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
     /**
      * Test of exportToPem method, of class CertUtil.
      */
@@ -149,59 +103,67 @@ public class CertUtilTest {
         X509Certificate x509Cert = CertUtil.loadCertificate(Util.getRawStr(Util.bytesFromFile(new File(storeFileName))));
     }
 
-//
-//    /**
-//     * Test of exportToPem method, of class CertUtil.
-//     */
-//    @Test
-//    public void testExportToPem_X509Certificate() throws Exception {
-//        System.out.println("exportToPem");
-//        X509Certificate x509cert = null;
-//        String expResult = "";
-//        String result = CertUtil.exportToPem(x509cert);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of exportToDer method, of class CertUtil.
-//     */
-//    @Test
-//    public void testExportToDer_Key() throws Exception {
-//        System.out.println("exportToDer");
-//        Key privateKey = null;
-//        String expResult = "";
-//        String result = CertUtil.exportToDer(privateKey);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of exportToDer method, of class CertUtil.
-//     */
-//    @Test
-//    public void testExportToDer_X509Certificate() throws Exception {
-//        System.out.println("exportToDer");
-//        X509Certificate x509cert = null;
-//        String expResult = "";
-//        String result = CertUtil.exportToDer(x509cert);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-    
+
+    /**
+     * Test of exportToPem method, of class CertUtil.
+     */
+    @Test
+    public void testExportToPem_X509Certificate() throws Exception {
+        System.out.println("exportToPem");
+        String pemFileName = CertUtilTest.class.getResource("/resources/burpca_certificate.pem").getPath();
+        String expResult = Util.getRawStr(Util.bytesFromFile(new File(pemFileName)));
+
+        String storeFileName = CertUtilTest.class.getResource("/resources/burpca.p12").getPath();
+        HashMap<String, Map.Entry<Key, X509Certificate>> certMap = CertUtil.loadFromPKCS12(new File(storeFileName), "testca");
+        for (String ailias : certMap.keySet()) {
+            Map.Entry<Key, X509Certificate> x509cert = certMap.get(ailias);
+            String result = CertUtil.exportToPem(x509cert.getValue());
+            assertEquals(expResult, result);
+            break;
+        }
+    }
+
+
+    /**
+     * Test of exportToDer method, of class CertUtil.
+     */
+    @Test
+    public void testExportToDer_Key() throws Exception {
+        System.out.println("exportToDer");
+        String storeFileName = CertUtilTest.class.getResource("/resources/burpca.p12").getPath();
+        HashMap<String, Map.Entry<Key, X509Certificate>> certMap = CertUtil.loadFromPKCS12(new File(storeFileName), "testca");
+        for (String ailias : certMap.keySet()) {
+            Map.Entry<Key, X509Certificate> x509cert = certMap.get(ailias);
+            byte [] result = CertUtil.exportToDer(x509cert.getKey());            
+            break;
+        }
+    }
+
+    /**
+     * Test of exportToDer method, of class CertUtil.
+     */
+    @Test
+    public void testExportToDer_X509Certificate() throws Exception {
+        System.out.println("exportToDer");
+        String storeFileName = CertUtilTest.class.getResource("/resources/burpca.p12").getPath();
+        HashMap<String, Map.Entry<Key, X509Certificate>> certMap = CertUtil.loadFromPKCS12(new File(storeFileName), "testca");
+        for (String ailias : certMap.keySet()) {
+            Map.Entry<Key, X509Certificate> x509cert = certMap.get(ailias);
+            byte [] result = CertUtil.exportToDer(x509cert.getValue());
+            break;
+        }
+    }
+
     @Test
     public void testRSAPem() throws Exception {
         String privateFile = CertUtilTest.class.getResource("/resources/private-key.pem").getPath();
-        byte [] privateBytes = Util.bytesFromFile(new File(privateFile));
+        byte[] privateBytes = Util.bytesFromFile(new File(privateFile));
         String privaeData = new String(privateBytes, StandardCharsets.ISO_8859_1);
         PrivateKey privateKey = CertUtil.loadPrivateKey(privaeData);
         String publicFile = CertUtilTest.class.getResource("/resources/public-key.pem").getPath();
-        byte [] publicBytes = Util.bytesFromFile(new File(publicFile));
+        byte[] publicBytes = Util.bytesFromFile(new File(publicFile));
         String publicData = new String(publicBytes, StandardCharsets.ISO_8859_1);
         PublicKey publicKey = CertUtil.loadPublicKey(publicData);
     }
-    
+
 }

@@ -17,6 +17,6 @@ release フォルダの BurpExtlib.jar をJavaのライブラリとしてイン�
 
 # 開発環境
 
-* NetBean 8.2(http://netbeans.org/)
-* Apache ant 1.9(http://ant.apache.org/)
+* NetBean 11.0 (https://netbeans.apache.org/)
+* Meven 3.6.1 (https://maven.apache.org/)
 

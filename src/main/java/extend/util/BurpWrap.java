@@ -249,35 +249,43 @@ public class BurpWrap {
             }
         }
 
+        @Override
         public String getProductName() {
             return this.productName;
         }
 
+        @Override
         public String getMajor() {
             return this.majorVersion;
         }
 
+        @Override
         public String getMinor() {
             return this.minorVersion;
         }
 
+        @Override
         public int getMajorVersion() {
             String majorver = this.majorVersion.replaceAll("\\.", "");
             return Util.parseIntDefault(majorver, 0);
         }
 
+        @Override
         public int getMinorVersion() {
             return Util.parseIntDefault(this.minorVersion, 0);
         }
 
+        @Override
         public boolean isFreeVersion() {
             return !this.isProfessional();
         }
 
+        @Override
         public boolean isExtendSupport() {
             return ((this.getMajorVersion() == 16) && (this.getMinorVersion() > 0)) || ((this.getMajorVersion() > 0));
         }
 
+        @Override
         public boolean isProfessional() {
             return (0 <= this.productName.indexOf("Professional"));
         }
@@ -311,7 +319,7 @@ public class BurpWrap {
     public static IHttpRequestResponse syncRequest(TestRequest testRequest) throws ExecutionException {
         try {
             final ExecutorService executor = Executors.newSingleThreadExecutor();
-            FutureTask<IHttpRequestResponse> task = new FutureTask(testRequest);
+            FutureTask<IHttpRequestResponse> task = new FutureTask<>(testRequest);
             executor.submit(task);
             IHttpRequestResponse message = task.get();
             return message;

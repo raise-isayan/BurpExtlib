@@ -3,13 +3,13 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>burp</groupId>
     <artifactId>BurpExtlib</artifactId>
-    <version>1.9</version>
+    <version>1.9.2</version>
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <releaseVersion>${project.version}.1.0</releaseVersion>
+        <releaseVersion>${project.version}.0</releaseVersion>
     </properties>
     <!-- ビルド設定 -->
     <build>
@@ -33,6 +33,15 @@
         </testResources>
 
         <plugins>
+            <!-- compile -->        
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.3</version>
+                <configuration>
+                    <compilerArgument>${compilerArgument}</compilerArgument>
+                </configuration>
+            </plugin>
+
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>3.1.0</version>
@@ -54,6 +63,7 @@
                     </execution>
                 </executions>
             </plugin>                       
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
@@ -69,8 +79,7 @@
                             <target>
                                 <zip destfile="${project.artifactId}-v${releaseVersion}.zip"  basedir=".">
                                     <include name="**"/>
-                                    <exclude name="nbproject/configs/**"/>
-                                    <exclude name="nbproject/private/**"/>
+                                    <exclude name="nbproject/**"/>
                                     <exclude name="**/.git"/>
                                     <exclude name="*.zip"/>
                                     <exclude name="target/**"/>
@@ -80,7 +89,7 @@
                     </execution>
                 </executions>
             </plugin>
-         </plugins>
+        </plugins>
     </build>
     <dependencies>
         <dependency>
