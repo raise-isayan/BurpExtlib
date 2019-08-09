@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>burp</groupId>
     <artifactId>BurpExtlib</artifactId>
-    <version>1.9.2</version>
+    <version>2.0.0</version>
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -39,6 +39,8 @@
                 <version>3.3</version>
                 <configuration>
                     <compilerArgument>${compilerArgument}</compilerArgument>
+                    <showDeprecation>true</showDeprecation>
+                    <debug>true</debug>
                 </configuration>
             </plugin>
 
@@ -92,6 +94,14 @@
         </plugins>
     </build>
     <dependencies>
+
+        <dependency>
+            <groupId>net.portswigger.burp.extender</groupId>
+            <artifactId>burp-extender-api</artifactId>
+            <version>1.7.22</version>
+            <!-- <scope>provided</scope> -->
+        </dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

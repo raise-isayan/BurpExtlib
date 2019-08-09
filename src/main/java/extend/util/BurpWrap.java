@@ -96,11 +96,11 @@ public class BurpWrap {
         return reqInfo.getUrl();
     }
 
-    public static URL getURL(byte[] request) {
+    public static URL getURL(IHttpService httpService, byte[] request) {
         if (helpers == null) {
             throw new NullPointerException("There is a need to call the 'assained' method");
         }
-        IRequestInfo reqInfo = helpers.analyzeRequest(request);
+        IRequestInfo reqInfo = helpers.analyzeRequest(httpService, request);
         return reqInfo.getUrl();
     }
 

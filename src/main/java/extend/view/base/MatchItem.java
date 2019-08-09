@@ -187,6 +187,7 @@ public class MatchItem extends RegexItem {
     }
 
     private boolean selected = true;
+
     private String type;
 
     /**

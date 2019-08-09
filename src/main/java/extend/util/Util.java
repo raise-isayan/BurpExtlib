@@ -507,6 +507,17 @@ public final class Util {
         return String.format("%s: %s", ex.getClass().getName(), ex.getMessage());
     }
 
+    
+    /**
+     * @since 1.9.3
+     */
+    public static String getStackTrace(Throwable ex) {
+        final Writer result = new StringWriter();
+        final PrintWriter printWriter = new PrintWriter(result);
+        ex.printStackTrace(printWriter);
+        return result.toString();
+    }
+        
     public static Charset lookupCharset(String csn) {
         if (Charset.isSupported(csn)) {
             try {
