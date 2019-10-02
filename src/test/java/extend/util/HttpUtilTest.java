@@ -133,6 +133,7 @@ public class HttpUtilTest {
      */
     @Test
     public void testGetDefaultProtocol() {
+        System.out.println("testGetDefaultProtocol");
         assertEquals("https", HttpUtil.getDefaultProtocol(true));               
         assertEquals("http", HttpUtil.getDefaultProtocol(false));               
     }
@@ -142,6 +143,7 @@ public class HttpUtilTest {
      */
     @Test
     public void testGetDefaultPort() {
+        System.out.println("testGetDefaultPort");
         assertEquals(443, HttpUtil.getDefaultPort(true));               
         assertEquals(80, HttpUtil.getDefaultPort(false));               
     }
@@ -151,9 +153,28 @@ public class HttpUtilTest {
      */
     @Test
     public void testGetDefaultPort_String() {
+        System.out.println("testGetDefaultPort_String");
         assertEquals(443, HttpUtil.getDefaultPort("https"));               
         assertEquals(80, HttpUtil.getDefaultPort("http"));               
         assertEquals(-1, HttpUtil.getDefaultPort("httpxxx"));               
+    }
+
+    /**
+     * Test of testNormalizeCharset method, of class HttpUtil.
+     */
+    @Test
+    public void testNormalizeCharset() {
+        System.out.println("testNormalizeCharset");
+        System.out.println(HttpUtil.normalizeCharset("Shift_JIS")); 
+        System.out.println(HttpUtil.normalizeCharset("Shift-JIS")); 
+        System.out.println(HttpUtil.normalizeCharset("shift_jis")); 
+        System.out.println(HttpUtil.normalizeCharset("Windows-31J")); 
+        System.out.println(HttpUtil.normalizeCharset("MS932")); 
+        System.out.println(HttpUtil.normalizeCharset(Util.DEFAULT_ENCODING)); 
+        System.out.println(HttpUtil.normalizeCharset(null)); 
+
+        System.out.println(Util.DEFAULT_ENCODING); 
+                
     }
 
     

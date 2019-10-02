@@ -107,12 +107,14 @@ public class HttpRequestTest {
      * Test of parseHttpRequest method, of class HttpRequest.
      */
     @Test
-    public void testParseHttpRequest_urlencoded() {
+    public void testParseHttpRequest_urlencoded() {        
         try {
             System.out.println("makeGetRequest");
             String expResult = "POST";
             HttpRequest result = HttpRequest.parseHttpRequest(REQ_MESSAGE_URLENCODE);
             assertEquals(expResult, result.getMethod());
+            assertEquals("US-ASCII", result.getGuessCharset());
+            System.out.println(result.getGuessCharset());
         } catch (ParseException ex) {
             Logger.getLogger(HttpRequestTest.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -130,6 +132,7 @@ public class HttpRequestTest {
             assertEquals(expResult, result.getMethod());
             System.out.println(result.getHeader());
             System.out.println(result.getBody());
+            assertEquals("UTF-8", result.getGuessCharset());
         } catch (ParseException ex) {
             Logger.getLogger(HttpRequestTest.class.getName()).log(Level.SEVERE, null, ex);
         }

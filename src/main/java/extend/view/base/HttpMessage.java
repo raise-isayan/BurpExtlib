@@ -14,7 +14,7 @@ public class HttpMessage {
 
     public final static String LINE_TERMINATE = "\r\n";
     private final Pattern CONTENT_LENGTH = Pattern.compile("^(Content-Length:\\s*)(\\d+)$", Pattern.MULTILINE);
-    private final Pattern CONTENT_TYPE = Pattern.compile("^Content-Type:\\s*(.*?)(?:;\\s+charset=[\"\']?([\\w_-]+)[\"\']?)?\\s*$", Pattern.MULTILINE);
+    private final Pattern CONTENT_TYPE = Pattern.compile("^Content-Type:\\s*([^;]+)(?:;\\s*charset=[\"\']?([\\w_-]+)[\"\']?)?\\s*$", Pattern.MULTILINE);
 
     private String header = "";
     private String body = "";
