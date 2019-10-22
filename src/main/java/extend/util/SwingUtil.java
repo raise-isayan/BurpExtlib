@@ -9,6 +9,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -287,13 +288,23 @@ public final class SwingUtil {
 
     public static class IntegerDocument extends PlainDocument {
 
-        int currentValue = 0;
+        BigInteger currentValue = BigInteger.valueOf(0);
+        int radix = 10;
 
         public IntegerDocument() {
             super();
         }
 
-        public int getValue() {
+        public IntegerDocument(int radix) {
+            super();
+            this.radix = radix;
+        }
+
+        public long getLongValue() {
+            return currentValue.longValue();
+        }
+        
+        public BigInteger getValue() {
             return currentValue;
         }
 
@@ -327,16 +338,16 @@ public final class SwingUtil {
             super.remove(offset, length);
         }
 
-        private int checkInput(String proposedValue, int offset) throws BadLocationException {
+        private BigInteger checkInput(String proposedValue, int offset) throws BadLocationException {
             if (proposedValue.length() > 0) {
                 try {
-                    int newValue = Integer.parseInt(proposedValue);
+                    BigInteger newValue = new BigInteger(proposedValue, this.radix);
                     return newValue;
                 } catch (NumberFormatException e) {
                     throw new BadLocationException(proposedValue, offset);
                 }
             } else {
-                return 0;
+                return BigInteger.valueOf(0);
             }
         }
     }

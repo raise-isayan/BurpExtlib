@@ -1,9 +1,11 @@
 package extend.util;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.KeyFactory;
+import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.X509Certificate;
@@ -166,4 +168,18 @@ public class CertUtilTest {
         PublicKey publicKey = CertUtil.loadPublicKey(publicData);
     }
 
+    /**
+     * Test of getFirstAlias method, of class OCSPUtil.
+     */
+    @Test
+    public void testGetFirstAlias() throws Exception {
+        System.out.println("getFirstAlias");
+        KeyStore ks = KeyStore.getInstance("PKCS12");
+        String password = "testca";
+        String caFileName = CertUtilTest.class.getResource("../../resources/burpca.p12").getPath();
+        ks.load(new FileInputStream(caFileName), password.toCharArray());
+        String alias = CertUtil.getFirstAlias(ks);
+        assertEquals("cacert", alias);
+    }
+    
 }
