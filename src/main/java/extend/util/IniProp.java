@@ -145,7 +145,7 @@ public class IniProp {
         if (entryValue == null) {
             entryValue = entryDefaultValue;
         }
-        return String.valueOf(entryValue);
+        return Util.toString(entryValue);
     }
 
     /**
@@ -178,7 +178,7 @@ public class IniProp {
             String sectionName,
             String entryName,
             boolean entryValue) {
-        return writeEntry(sectionName, entryName, Boolean.toString(entryValue));
+        return writeEntry(sectionName, entryName, Util.toString(entryValue));
     }
 
     /**
@@ -208,7 +208,7 @@ public class IniProp {
             String sectionName,
             String entryName,
             float entryValue) {
-        return writeEntry(sectionName, entryName, String.valueOf(entryValue));
+        return writeEntry(sectionName, entryName, Util.toString(entryValue));
     }
 
     /**
@@ -371,7 +371,7 @@ public class IniProp {
                 if (entryValue instanceof List) {
                     writeEntryList(sectionName, entryName, (List) entryValue);
                 } else {
-                    writeEntry(sectionName, entryName, String.valueOf(entryValue));
+                    writeEntry(sectionName, entryName, Util.toString(entryValue));
                 }
             }
         }
@@ -543,13 +543,13 @@ public class IniProp {
             for (Object item : list) {
                 Element elementItem = document.createElement("item");
                 elementItem.setAttribute("type", "string");
-                elementItem.appendChild(document.createTextNode(String.valueOf(item)));
+                elementItem.appendChild(document.createTextNode(Util.toString(item)));
                 elementList.appendChild(elementItem);
             }
             element.appendChild(elementList);
         } else {
             element.setAttribute("type", "string");
-            element.appendChild(document.createTextNode(String.valueOf(entryValue)));
+            element.appendChild(document.createTextNode(Util.toString(entryValue)));
         }
     }
 }

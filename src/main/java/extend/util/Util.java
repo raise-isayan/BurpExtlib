@@ -34,6 +34,51 @@ public final class Util {
     private Util() {
     }
 
+    public static String toString(String value) {
+        if (value == null) {
+            return "";
+        }
+        else {
+            return String.valueOf(value);
+        }
+    }
+
+    public static String toString(Boolean value) {
+        if (value == null) {
+            return "";
+        }
+        else {
+            return String.valueOf(value);
+        }
+    }
+    
+    public static String toString(Integer value) {
+        if (value == null) {
+            return "";
+        }
+        else {
+            return String.valueOf(value);
+        }
+    }
+
+    public static String toString(Float value) {
+        if (value == null) {
+            return "";
+        }
+        else {
+            return String.valueOf(value);
+        }
+    }
+
+    public static String toString(Object value) {
+        if (value == null) {
+            return "";
+        }
+        else {
+            return String.valueOf(value);
+        }
+    }
+    
     /**
      * 文字列を数字に変換
      *
@@ -149,6 +194,11 @@ public final class Util {
         return new String(encodeByte, StandardCharsets.ISO_8859_1);
     }
 
+    public static String getRawByteStr(String message, Charset charset) {
+        byte[] encodeByte = message.getBytes(charset);
+        return new String(encodeByte, StandardCharsets.ISO_8859_1);
+    }
+    
     public static String appendFirstSeparator(String path, String separator) {
         if (path.startsWith(separator)) {
             return path;
@@ -350,9 +400,9 @@ public final class Util {
 
     public static List<String> toUniqList(String regex, List<String> list) {
         Pattern pattern = Pattern.compile(regex);
-        Map<String, Boolean> mapUniq = new LinkedHashMap<String, Boolean>(16, (float) 0.75, true);
+        Map<String, Boolean> mapUniq = new LinkedHashMap<>(16, (float) 0.75, true);
         for (String k : list) {
-            Matcher m = pattern.matcher(String.valueOf(k));
+            Matcher m = pattern.matcher(Util.toString(k));
             if (m.matches()) {
                 String g = (m.groupCount() > 0) ? (m.group(1)) : (m.group(0));
                 mapUniq.put(g, true);

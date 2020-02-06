@@ -1,6 +1,7 @@
 package extend.view.base;
 
 import extend.util.HttpUtil;
+import extend.util.Util;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -119,7 +120,7 @@ public class TargetScopeItem {
             if (urlPort == -1) {
             urlPort = HttpUtil.getDefaultPort(url.getProtocol());
         }
-        Matcher matchPort = this.regexPort.matcher(String.valueOf(urlPort));
+        Matcher matchPort = this.regexPort.matcher(Util.toString(urlPort));
         Matcher matchFile = this.regexFile.matcher(url.getFile());
         
         if ((PROTOCOL_ANY.equals(this.getProtocol()) || matchProtocol.matches()) && 
@@ -166,7 +167,7 @@ public class TargetScopeItem {
             if (urlPort == -1) {
             urlPort = HttpUtil.getDefaultPort(url.getProtocol());
         }
-        item.setPort(String.valueOf(urlPort));
+        item.setPort(Util.toString(urlPort));
         if ("".equals(url.getFile())) {
             item.setFile("^/.*");
         }
