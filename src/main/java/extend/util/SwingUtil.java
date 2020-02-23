@@ -440,7 +440,7 @@ public final class SwingUtil {
 
     public static String getKeyText(java.awt.event.KeyEvent evt) {
         StringBuilder keyIdent = new StringBuilder();
-        keyIdent.append(java.awt.event.KeyEvent.getKeyModifiersText(evt.getModifiers()));
+        keyIdent.append(java.awt.event.KeyEvent.getModifiersExText(evt.getModifiersEx()));
         if (evt.getKeyCode() != java.awt.event.KeyEvent.CHAR_UNDEFINED
                 && evt.getKeyCode() != java.awt.event.KeyEvent.VK_CONTROL
                 && evt.getKeyCode() != java.awt.event.KeyEvent.VK_SHIFT

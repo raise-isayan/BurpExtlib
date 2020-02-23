@@ -11,6 +11,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.DataFormatException;
@@ -33,6 +34,10 @@ import org.w3c.dom.Text;
  */
 public final class ConvertUtil {
 
+    public static String repeat(String str, int n) {
+      return String.join("", Collections.nCopies(n, str));
+    }    
+    
     public static String newLine(String separator, String value, int length) {
         Pattern p = Pattern.compile(String.format("(.{%d})", length));
         StringBuffer sb = new StringBuffer();
