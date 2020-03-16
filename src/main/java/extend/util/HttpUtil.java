@@ -99,9 +99,19 @@ public final class HttpUtil {
 
     public static void outMultipartText(String boundary, OutputStream out, String name, String text) throws IOException {
         // Text出力
+        outMultipartText(boundary, out, name, text, null);
+    }
+    
+    public static void outMultipartText(String boundary, OutputStream out, String name, String text, Charset charset) throws IOException {
+        // Text出力
         out.write(Util.getRawByte("--" + boundary + LINE_TERMINATE));
         out.write(Util.getRawByte("Content-Disposition: form-data; name=\"" + name + "\"" + LINE_TERMINATE));
-        out.write(Util.getRawByte("Content-Type: text/plain" + LINE_TERMINATE + LINE_TERMINATE));
+        if (charset == null) {
+            out.write(Util.getRawByte("Content-Type: text/plain;" + LINE_TERMINATE + LINE_TERMINATE));
+        }
+        else {
+            out.write(Util.getRawByte("Content-Type: text/plain; charset=" + charset.displayName() + LINE_TERMINATE + LINE_TERMINATE));        
+        }
         out.write(Util.getRawByte(text));
         out.write(Util.getRawByte(LINE_TERMINATE));
     }

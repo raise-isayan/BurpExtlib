@@ -1,7 +1,10 @@
 package extend.util;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.net.MalformedURLException;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -159,6 +162,27 @@ public class HttpUtilTest {
         assertEquals(-1, HttpUtil.getDefaultPort("httpxxx"));               
     }
 
+    /**
+     * Test of testMultipart method, of class HttpUtil.
+     */
+    @Test
+    public void testMultipart() {
+        try {
+            String boundary = HttpUtil.generateBoundary();
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            HttpUtil.outMultipartText(boundary, out, "host", "www.exmple.com");
+            HttpUtil.outMultipartText(boundary, out, "port", Util.toString(8080));
+            HttpUtil.outMultipartText(boundary, out, "protocol", "https");
+            HttpUtil.outMultipartText(boundary, out, "url", "https://www.example.com/");
+            HttpUtil.outMultipartText(boundary, out, "comment", "コメント", StandardCharsets.UTF_8);
+            System.out.println(new String(out.toByteArray(), StandardCharsets.ISO_8859_1));
+        } catch (IOException ex) {
+            Logger.getLogger(HttpUtilTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+    
+    
     /**
      * Test of testNormalizeCharset method, of class HttpUtil.
      */
