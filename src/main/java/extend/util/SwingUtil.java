@@ -7,17 +7,22 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.im.InputContext;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
+import static javax.swing.TransferHandler.NONE;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.JTextComponent;
 import javax.swing.text.PlainDocument;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -464,4 +469,133 @@ public final class SwingUtil {
         getRobot().mouseRelease(buttons);
     }
 
+    public static class FileDropAndClipbordTransferHandler extends TransferHandler {
+
+        public FileDropAndClipbordTransferHandler() {
+        
+        }
+                
+        @Override
+        public void exportToClipboard(JComponent comp, Clipboard clipboard,
+                int action) throws IllegalStateException {
+            if (comp instanceof JTextComponent) {
+                JTextComponent text = (JTextComponent) comp;
+                int p0 = text.getSelectionStart();
+                int p1 = text.getSelectionEnd();
+                if (p0 != p1) {
+                    try {
+                        Document doc = text.getDocument();
+                        String srcData = doc.getText(p0, p1 - p0);
+                        StringSelection contents = new StringSelection(srcData);
+                        clipboard.setContents(contents, null);
+
+                        if (action == TransferHandler.MOVE) {
+                            doc.remove(p0, p1 - p0);
+                        }
+                    } catch (BadLocationException ble) {
+                    }
+                }
+            }
+        }
+
+        @Override
+        public boolean importData(JComponent comp, Transferable t) {
+            if (comp instanceof JTextComponent) {
+                DataFlavor flavor = getFlavor(t.getTransferDataFlavors());
+                if (flavor != null) {
+                    InputContext ic = comp.getInputContext();
+                    if (ic != null) {
+                        ic.endComposition();
+                    }
+                    try {
+                        String data = (String) t.getTransferData(flavor);
+                        ((JTextComponent) comp).replaceSelection(data);
+                        return true;
+                    } catch (UnsupportedFlavorException ex) {
+                        Logger.getLogger(SwingUtil.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (IOException ex) {
+                        Logger.getLogger(SwingUtil.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+            return false;
+        }
+
+        @Override
+        public boolean canImport(JComponent comp, DataFlavor[] transferFlavors) {
+            JTextComponent c = (JTextComponent) comp;
+            if (!(c.isEditable() && c.isEnabled())) {
+                return false;
+            }
+            return (getFlavor(transferFlavors) != null);
+        }
+
+        @Override
+        public boolean importData(TransferHandler.TransferSupport support) {
+            Transferable t = support.getTransferable();
+            if (support.isDrop()) {
+                try {
+                    Object data = t.getTransferData(DataFlavor.javaFileListFlavor);
+                    if (data instanceof java.util.List) {
+                        java.util.List<File> files = (java.util.List) data;
+                        byte[] rawData = new byte[0];
+                        for (File file : files) {
+                            rawData = Util.readAllBytes(new FileInputStream(file));
+                            break;
+                        }
+                        setData(rawData);
+                    }
+                } catch (UnsupportedFlavorException ex) {
+                    Logger.getLogger(SwingUtil.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(SwingUtil.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                return support.getComponent() instanceof JComponent
+                        ? importData((JComponent) support.getComponent(), support.getTransferable())
+                        : false;
+            }
+            return false;
+        }
+
+        @Override
+        public boolean canImport(TransferHandler.TransferSupport support) {
+            if (support.isDrop()) {
+                if (support.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+                    return true;
+                }
+            } else {
+                return support.getComponent() instanceof JComponent
+                        ? canImport((JComponent) support.getComponent(), support.getDataFlavors())
+                        : false;
+            }
+            return false;
+        }
+
+        
+        public void setData(byte[] rawData) {
+        
+        }
+        
+        
+        @Override
+        public int getSourceActions(JComponent c) {
+            return NONE;
+        }
+
+        private DataFlavor getFlavor(DataFlavor[] flavors) {
+            if (flavors != null) {
+                for (DataFlavor flavor : flavors) {
+                    if (flavor.equals(DataFlavor.stringFlavor)) {
+                        return flavor;
+                    }
+                }
+            }
+            return null;
+        }
+
+    }
+    
+    
+    
 }
