@@ -536,14 +536,15 @@ public final class SwingUtil {
             if (support.isDrop()) {
                 try {
                     Object data = t.getTransferData(DataFlavor.javaFileListFlavor);
-                    if (data instanceof java.util.List) {
-                        java.util.List<File> files = (java.util.List) data;
-                        byte[] rawData = new byte[0];
-                        for (File file : files) {
+                    java.util.List lists = (java.util.List) data;
+                    for (Object item : lists) {
+                        if (item instanceof File) {
+                            File file = (File) item;
+                            byte[] rawData = new byte[0];
                             rawData = Util.readAllBytes(new FileInputStream(file));
+                            setData(rawData);
                             break;
                         }
-                        setData(rawData);
                     }
                 } catch (UnsupportedFlavorException ex) {
                     Logger.getLogger(SwingUtil.class.getName()).log(Level.SEVERE, null, ex);

@@ -8,7 +8,7 @@ import javax.swing.DefaultListModel;
  *
  * @author isayan
  */
-public class CustomListModel extends DefaultListModel {
+public class CustomListModel<E> extends DefaultListModel<E> {
 
     /**
      * 上へ移動
@@ -19,8 +19,8 @@ public class CustomListModel extends DefaultListModel {
     @SuppressWarnings("unchecked")
     public synchronized int moveUp(int index) {
         if (0 < index) {
-            Object prevItem = this.getElementAt(index);
-            Object curItem = this.set(index - 1, prevItem);
+            E prevItem = this.getElementAt(index);
+            E curItem = this.set(index - 1, prevItem);
             this.setElementAt(curItem, index);
             index--;
         }
@@ -36,8 +36,8 @@ public class CustomListModel extends DefaultListModel {
     @SuppressWarnings("unchecked")
     public synchronized int moveDown(int index) {
         if (-1 < index && index < this.size() - 1) {
-            Object prevItem = this.getElementAt(index);
-            Object curItem = this.set(index + 1, prevItem);
+            E prevItem = this.getElementAt(index);
+            E curItem = this.set(index + 1, prevItem);
             this.setElementAt(curItem, index);
             index++;
         }
