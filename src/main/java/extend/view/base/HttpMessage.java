@@ -109,6 +109,13 @@ public class HttpMessage {
         this.setBody(httpMsg.getBody());
     }
 
+    public int getBodyOffset() {
+        int len = Util.getRawByte(this.header).length;
+        len += Util.getRawByte(HttpMessage.LINE_TERMINATE).length;
+        len += Util.getRawByte(HttpMessage.LINE_TERMINATE).length;
+        return len;
+    }
+        
     public boolean isBody() {
         return (this.body.length() > 0);
     }
