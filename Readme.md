@@ -1,21 +1,24 @@
-Burp suite Extension 共通ライブラリ
+Burp suite Extension common library
 =============
-このライブラリは、PortSwigger社の製品であるBurp SuiteのExtensionを作成するためによく利用するライブラリをまとめたものになります。
 
-# 使用方法
+Language/[English](Readme.md)
 
-release フォルダの BurpExtlib.jar をJavaのライブラリとしてインポートしてご利用ください。
+This library is a collection of libraries often used to create extensions to PortSwigger Burp Suite, which is a product of PortSwigger.
 
-# 含まれる内容
+# How to use
 
-* Burp sute Extension のAPIインタフェース
-* Item位置を移動可能なListModelおよびTableModel
-* HTTP Request、HTTP Response を扱うのに便利なラッパー
+Please import BurpExtlib.jar in the release folder as a Java library and use it.
 
-# 対応バージョン
+# Features
+
+* API interface of Burp sute Extension
+* ListModel and TableModel with movable Item position
+* A useful wrapper for handling HTTP Requests and HTTP Responses
+
+# Supported Versions
 * Burp suite v2.1
 
-# 開発環境
+# development environment
 
 * NetBean 11.0 (https://netbeans.apache.org/)
 * Meven 3.6.1 (https://maven.apache.org/)

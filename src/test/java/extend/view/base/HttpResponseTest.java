@@ -33,7 +33,7 @@ public class HttpResponseTest {
     public void tearDown() {
     }
 
-    private final static String RES_TEST10_FMT = "HTTP/1.1 200 OK\r\n"
+    private final static String RES_HEADER1 = "HTTP/1.1 200 OK\r\n"
             + "Date: Sat, 03 Feb 2018 02:22:53 GMT\r\n"
             + "Server: Apache/2.4.10 (Debian)\r\n"
             + "Set-Cookie: TestCookie=test\r\n"
@@ -43,7 +43,7 @@ public class HttpResponseTest {
             + "Connection: close\r\n"
             + "\r\n\r\n";
 
-        private final static String RES_TEST11_FMT = "HTTP/1.1 200 OK\r\n"
+        private final static String RES_HEADER2 = "HTTP/1.1 200 OK\r\n"
             + "Date: Sat, 19 Jan 2019 02:49:15 GMT\r\n"
             + "Server: Apache/2.4.10 (Debian)\r\n"
             + "Set-Cookie: TestCookie=test\r\n"
@@ -53,8 +53,46 @@ public class HttpResponseTest {
             + "Content-Length: 116\r\n"
             + "Connection: close\r\n"
             + "Content-Type: text/html; charset=UTF-8\r\n\r\n";
-        
 
+
+    private final static String RES_BODY1 = "<!DOCTYPE html>"
+            + "<html lang=\"ja\">"
+            + "<head>"
+            +"<script>alert(0)</script>"
+            + "<meta charset=\"UTF-8\">"
+            + "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">"
+            + "<title>title</title>"
+            + "</head>"
+            + "<body>"
+            + "<h2 class=\"header2\">test</h2>"
+            + "</body>"
+            + "</html>";
+
+    
+        private final static String RES_BODY2 = "<!DOCTYPE html>"
+            + "<html lang=\"ja\">"
+            + "<head>"
+            +"<script>alert(0)</script>"
+            + "<meta charset=\"Shift_JIS\">"
+            + "<title>title</title>"
+            + "</head>"
+            + "<body>"
+            + "<h2 class=\"header2\">test</h2>"
+            + "</body>"
+            + "</html>";
+
+        private final static String RES_BODY3 = "<!DOCTYPE html>"
+            + "<html lang=\"ja\">"
+            + "<head>"
+            +"<script>alert(0)</script>"
+            + "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=euc-jp\">"
+            + "<title>title</title>"
+            + "</head>"
+            + "<body>"
+            + "<h2 class=\"header2\">test</h2>"
+            + "</body>"
+            + "</html>";
+        
     /**
      * Test of getStatusLine method, of class HttpResponse.
      */
@@ -62,7 +100,7 @@ public class HttpResponseTest {
     public void testGetStatusLine() {
         System.out.println("getStatusLine");
         try {
-            HttpResponse instance = HttpResponse.parseHttpResponse(RES_TEST10_FMT);
+            HttpResponse instance = HttpResponse.parseHttpResponse(RES_HEADER1);
             String expResult = "HTTP/1.1 200 OK";
             String result = instance.getStatusLine();
             assertEquals(expResult, result);
@@ -78,7 +116,7 @@ public class HttpResponseTest {
     public void testGetProtocolVersion() {
         System.out.println("getProtocolVersion");
         try {
-            HttpResponse instance = HttpResponse.parseHttpResponse(RES_TEST10_FMT);
+            HttpResponse instance = HttpResponse.parseHttpResponse(RES_HEADER1);
             String expResult = "HTTP/1.1";
             String result = instance.getProtocolVersion();
             assertEquals(expResult, result);
@@ -94,7 +132,7 @@ public class HttpResponseTest {
     public void testGetStatusCode() {
         System.out.println("getStatusCode");
         try {
-            HttpResponse instance = HttpResponse.parseHttpResponse(RES_TEST10_FMT);
+            HttpResponse instance = HttpResponse.parseHttpResponse(RES_HEADER1);
             short expResult = 200;
             short result = instance.getStatusCode();
             assertEquals(expResult, result);
@@ -110,7 +148,7 @@ public class HttpResponseTest {
     public void testGetReasonPhrase() {
         System.out.println("getReasonPhrase");
         try {
-            HttpResponse instance = HttpResponse.parseHttpResponse(RES_TEST10_FMT);
+            HttpResponse instance = HttpResponse.parseHttpResponse(RES_HEADER1);
             String expResult = "OK";
             String result = instance.getReasonPhrase();
             assertEquals(expResult, result);
@@ -124,17 +162,40 @@ public class HttpResponseTest {
      */
     @Test
     public void testGetGuessCharset() {
+        System.out.println("getGuessCharset");
         try {
-            System.out.println("getGuessCharset");
-            HttpResponse instance = HttpResponse.parseHttpResponse(RES_TEST10_FMT);
+            HttpResponse instance = HttpResponse.parseHttpResponse(RES_HEADER1);
             String expResult = "US-ASCII";
             String result = instance.getGuessCharset();
             assertEquals(expResult, result);
         } catch (ParseException ex) {
             fail("getGuessCharset");
         }
+        try {
+            HttpResponse instance = HttpResponse.parseHttpResponse(RES_HEADER1 + RES_BODY1);
+            String expResult = "UTF-8";
+            String result = instance.getGuessCharset();
+            assertEquals(expResult, result);
+        } catch (ParseException ex) {
+            fail("getGuessCharset");
+        }
+        try {
+            HttpResponse instance = HttpResponse.parseHttpResponse(RES_HEADER1 + RES_BODY2);
+            String expResult = "Shift_JIS";
+            String result = instance.getGuessCharset();
+            assertEquals(expResult, result);
+        } catch (ParseException ex) {
+            fail("getGuessCharset");
+        }
+        try {
+            HttpResponse instance = HttpResponse.parseHttpResponse(RES_HEADER1 + RES_BODY3);
+            String expResult = "EUC-JP";
+            String result = instance.getGuessCharset();
+            assertEquals(expResult, result);
+        } catch (ParseException ex) {
+            fail("getGuessCharset");
+        }
     }
-
 
     /**
      * Test of getContentMimeType method, of class HttpResponse.
@@ -144,13 +205,13 @@ public class HttpResponseTest {
         System.out.println("getContentMimeType");
         try {
             {
-                HttpResponse instance = HttpResponse.parseHttpResponse(RES_TEST10_FMT);
+                HttpResponse instance = HttpResponse.parseHttpResponse(RES_HEADER1);
                 String expResult = null;
                 String result = instance.getContentMimeType();
                 assertEquals(expResult, result);            
             }
             {
-                HttpResponse instance = HttpResponse.parseHttpResponse(RES_TEST11_FMT);
+                HttpResponse instance = HttpResponse.parseHttpResponse(RES_HEADER2);
                 String expResult = "text/html";
                 String result = instance.getContentMimeType();
                 assertEquals(expResult, result);            
@@ -168,13 +229,13 @@ public class HttpResponseTest {
         System.out.println("getContentLength");
         try {
             {
-                HttpResponse instance = HttpResponse.parseHttpResponse(RES_TEST10_FMT);
+                HttpResponse instance = HttpResponse.parseHttpResponse(RES_HEADER1);
                 int expResult = -1;
                 int result = instance.getContentLength();
                 assertEquals(expResult, result);            
             }
             {
-                HttpResponse instance = HttpResponse.parseHttpResponse(RES_TEST11_FMT);
+                HttpResponse instance = HttpResponse.parseHttpResponse(RES_HEADER2);
                 int expResult = 116;
                 int result = instance.getContentLength();
                 assertEquals(expResult, result);            
@@ -183,5 +244,7 @@ public class HttpResponseTest {
             fail("getGuessCharset");
         }
     }
+
+
     
 }

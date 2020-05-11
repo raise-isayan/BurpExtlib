@@ -3,8 +3,9 @@ package burp;
 import extend.util.BurpWrap;
 import extend.util.Util;
 import java.awt.TrayIcon;
-import java.io.IOException;
 import java.io.OutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -52,26 +53,34 @@ public class BurpExtenderImpl implements IBurpExtender {
         return burp_version;
     }
 
-    public static void outPrintln(String message) throws IOException {
+    public static void outPrintln(String message) {
         outPrint(message + "\n");
     }
 
-    public static void outPrint(String message) throws IOException {
-        OutputStream ostm = callbacks.getStdout();
-        byte b[] = Util.getRawByte(message);
-        ostm.write(b, 0, b.length);
+    public static void outPrint(String message) {
+        try {
+            OutputStream ostm = callbacks.getStdout();
+            byte b[] = Util.getRawByte(message);
+            ostm.write(b, 0, b.length);        
+        } catch (Exception ex) {
+            Logger.getLogger(BurpExtenderImpl.class.getName()).log(Level.SEVERE, null, ex);        
+        }
     }
 
-    public static void errPrint(String message) throws IOException {
-        OutputStream ostm = callbacks.getStderr();
-        byte b[] = Util.getRawByte(message);
-        ostm.write(b, 0, b.length);
-    }
-
-    public static void errPrintln(String message) throws IOException {
+    public static void errPrintln(String message) {
         errPrint(message + "\n");
     }
 
+    public static void errPrint(String message) {
+        try {
+            OutputStream ostm = callbacks.getStderr();
+            byte b[] = Util.getRawByte(message);
+            ostm.write(b, 0, b.length);
+        } catch (Exception ex) {
+            Logger.getLogger(BurpExtenderImpl.class.getName()).log(Level.SEVERE, null, ex);                
+        }
+    }
+    
     /**
      * burp alert 通知
      *

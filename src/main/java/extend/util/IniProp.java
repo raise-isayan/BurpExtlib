@@ -31,7 +31,7 @@ public class IniProp {
      * IniPropクラスの新しいインスタンスを作成します。
      */
     public IniProp() {
-        this.section = new TreeMap<String, Object>();
+        this.section = new TreeMap<>();
     }
 
     /**
