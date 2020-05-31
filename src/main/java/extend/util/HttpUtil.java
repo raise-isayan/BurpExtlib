@@ -5,6 +5,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import java.net.ProxySelector;
+import java.net.SocketAddress;
+import java.net.URI;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
@@ -155,12 +160,17 @@ public final class HttpUtil {
         return tm;
     }
 
-    public static SSLSocketFactory ignoreSocketFactory()
+    public static SSLContext ignoreSSLContext()
             throws NoSuchAlgorithmException, KeyManagementException {
         KeyManager[] km = null;
         SSLContext sslcontext = SSLContext.getInstance("SSL");
         sslcontext.init(km, trustAllCerts(), new SecureRandom());
-        return sslcontext.getSocketFactory();
+        return sslcontext;
+    }
+        
+    public static SSLSocketFactory ignoreSocketFactory()
+            throws NoSuchAlgorithmException, KeyManagementException {
+        return ignoreSSLContext().getSocketFactory();
     }
 
     public static void ignoreValidateCertification() {
@@ -581,5 +591,64 @@ public final class HttpUtil {
         }
         return buff.toString();
     }
-    
+
+    public static class StaticProxySelector extends ProxySelector {
+        private static final List<Proxy> NO_PROXY_LIST = List.of(Proxy.NO_PROXY);
+        final List<Proxy> list;
+
+        public StaticProxySelector(Proxy proxy){
+            Proxy p;
+            if (proxy == null) {
+                p = Proxy.NO_PROXY;
+            } else {
+                p = proxy;
+            }
+            list = List.of(p);
+        }
+
+        @Override
+        public void connectFailed(URI uri, SocketAddress sa, IOException e) {
+            /* ignore */
+        }
+
+        @Override
+        public synchronized List<Proxy> select(URI uri) {
+            String scheme = uri.getScheme().toLowerCase();
+            if (scheme.equals("http") || scheme.equals("https")) {
+                return list;
+            } else {
+                return NO_PROXY_LIST;
+            }
+        }
+
+        public static ProxySelector of(Proxy proxy) {
+            return new StaticProxySelector(proxy);
+        }
+
+    }
+        
+    public static class DummyOutputStream extends OutputStream {
+
+        private int size = 0;
+
+        @Override
+        public void write(int b) throws IOException {
+            size += 1;
+        }
+
+        @Override
+        public void write(byte[] bytes) throws IOException {
+            size += bytes.length;
+        }
+
+        @Override
+        public void write(byte[] b, int off, int len) throws IOException {
+            size += len;
+        }
+
+        public int getSize() {
+            return this.size;
+        }
+    }
+        
 }

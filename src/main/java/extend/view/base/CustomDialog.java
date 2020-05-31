@@ -5,6 +5,8 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.JOptionPane;
 import javax.swing.event.EventListenerList;
 
@@ -25,6 +27,12 @@ public class CustomDialog extends javax.swing.JDialog {
      */
     public CustomDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                modalResult = JOptionPane.CANCEL_OPTION;                                
+            }            
+        });        
     }
 
     protected EventListenerList listenerList = new EventListenerList();
