@@ -137,11 +137,18 @@ public class ConvertUtilTest {
             assertEquals("hogeho", ConvertUtil.toBase64Decode("aG9nZWhv", "8859_1"));
             assertEquals("fugaf", ConvertUtil.toBase64Decode("ZnVnYWY=", "8859_1"));
             assertEquals("test", ConvertUtil.toBase64Decode("dGVzdA==", "8859_1"));
-            System.out.println(ConvertUtil.toBase64Decode("absdadbd", "8859_1"));
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(ConvertUtilTest.class.getName()).log(Level.SEVERE, null, ex);
             assertTrue(false);
         }
+        try {
+            System.out.println("toBASE64Decoder");
+            System.out.println(ConvertUtil.toBase64Decode("absdadbd", "8859_1"));
+            System.out.println(ConvertUtil.toBase64Decode("!\"#$%&'()=~|", "8859_1"));
+        } catch (IllegalArgumentException ex) {
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(ConvertUtilTest.class.getName()).log(Level.SEVERE, null, ex);
+       }
     }
     
 }

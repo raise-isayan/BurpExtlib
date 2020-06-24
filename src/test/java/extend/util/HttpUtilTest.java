@@ -2,9 +2,16 @@ package extend.util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.URL;
 import java.net.MalformedURLException;
+import java.net.Proxy;
+import java.net.Proxy.Type;
+import java.net.ProxySelector;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -201,5 +208,37 @@ public class HttpUtilTest {
                 
     }
 
+    /**
+     * Test of StaticProxySelector class, of class HttpUtil.
+     */
+    @Test
+    public void testStaticProxySelector() {
+        System.out.println("staticProxySelector");
+        Proxy localProxy = new Proxy(Type.HTTP, new InetSocketAddress("localhost", 8080));
+        try {
+            ProxySelector proxySelector = HttpUtil.StaticProxySelector.of(localProxy);
+            List proxy = proxySelector.select(new URI("https://localhost"));
+            assertEquals(1, proxy.size());
+            assertEquals(localProxy, proxy.get(0));
+        } catch (URISyntaxException ex) {
+            fail(ex.getMessage());
+        }
+        try {
+            ProxySelector proxySelector = new HttpUtil.StaticProxySelector(localProxy);
+            List proxy = proxySelector.select(new URI("https://localhost"));
+            assertEquals(1, proxy.size());
+            assertEquals(localProxy, proxy.get(0));
+        } catch (URISyntaxException ex) {
+            fail(ex.getMessage());
+        }
+        try {
+            ProxySelector proxySelector = new HttpUtil.StaticProxySelector(null);
+            List proxy = proxySelector.select(new URI("https://localhost"));
+            assertEquals(1, proxy.size());
+            assertEquals(Proxy.NO_PROXY, proxy.get(0));
+        } catch (URISyntaxException ex) {
+            fail(ex.getMessage());
+        }
+    }
     
 }

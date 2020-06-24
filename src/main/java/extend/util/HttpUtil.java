@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
+import java.net.MalformedURLException;
 import java.net.Proxy;
 import java.net.ProxySelector;
 import java.net.SocketAddress;
@@ -23,6 +24,7 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -79,6 +81,17 @@ public final class HttpUtil {
         return (header.contains("xml") || header.contains("json"));
     }
 
+    public static boolean isValidUrl(String url) {
+        try {
+            new URL(url);
+            return true;
+        }
+        catch (MalformedURLException ex) {
+            return false;    
+        }
+    }
+    
+    
     public static boolean startsWithHttp(String url) {
         return url.startsWith("http://") || url.startsWith("https://");
     }
@@ -593,17 +606,23 @@ public final class HttpUtil {
     }
 
     public static class StaticProxySelector extends ProxySelector {
-        private static final List<Proxy> NO_PROXY_LIST = List.of(Proxy.NO_PROXY);
-        final List<Proxy> list;
 
-        public StaticProxySelector(Proxy proxy){
+        private static final List<Proxy> NO_PROXY_LIST = new ArrayList<>();
+
+        static {
+            NO_PROXY_LIST.add(Proxy.NO_PROXY);
+        }        
+
+        private final List<Proxy> list = new ArrayList<>();
+
+        public StaticProxySelector(Proxy proxy){     
             Proxy p;
             if (proxy == null) {
                 p = Proxy.NO_PROXY;
             } else {
                 p = proxy;
             }
-            list = List.of(p);
+            list.add(p);
         }
 
         @Override
