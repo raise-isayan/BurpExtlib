@@ -59,9 +59,14 @@ public class BurpExtenderImpl implements IBurpExtender {
 
     public static void outPrint(String message) {
         try {
-            OutputStream ostm = callbacks.getStdout();
-            byte b[] = Util.getRawByte(message);
-            ostm.write(b, 0, b.length);        
+            if (callbacks != null) {
+                OutputStream ostm = callbacks.getStdout();
+                byte b[] = Util.getRawByte(message);
+                ostm.write(b, 0, b.length);
+            }
+            else {
+                System.out.print(message);
+            }
         } catch (Exception ex) {
             Logger.getLogger(BurpExtenderImpl.class.getName()).log(Level.SEVERE, null, ex);        
         }
@@ -73,9 +78,14 @@ public class BurpExtenderImpl implements IBurpExtender {
 
     public static void errPrint(String message) {
         try {
-            OutputStream ostm = callbacks.getStderr();
-            byte b[] = Util.getRawByte(message);
-            ostm.write(b, 0, b.length);
+            if (callbacks != null) {
+                OutputStream ostm = callbacks.getStderr();
+                byte b[] = Util.getRawByte(message);
+                ostm.write(b, 0, b.length);
+            }
+            else {
+                System.err.print(message);
+            }
         } catch (Exception ex) {
             Logger.getLogger(BurpExtenderImpl.class.getName()).log(Level.SEVERE, null, ex);                
         }
