@@ -104,6 +104,22 @@ public class HttpRequestTest {
         "\r\n";
 
     /**
+     * Test of getContentMimeType method, of class HttpResponse.
+     */
+    @Test
+    public void testGetEncType() {
+        try {
+            System.out.println("getEncType");
+            HttpRequest req = HttpRequest.parseHttpRequest(REQ_MESSAGE_URLENCODE);
+            String result = req.getEnctype();
+            String expResult = "application/x-www-form-urlencoded";
+            assertEquals(expResult, result);            
+        } catch (ParseException ex) {
+            Logger.getLogger(HttpRequestTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+        
+    /**
      * Test of parseHttpRequest method, of class HttpRequest.
      */
     @Test
@@ -137,6 +153,5 @@ public class HttpRequestTest {
             Logger.getLogger(HttpRequestTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
     
 }

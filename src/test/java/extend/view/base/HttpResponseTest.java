@@ -54,7 +54,25 @@ public class HttpResponseTest {
             + "Connection: close\r\n"
             + "Content-Type: text/html; charset=UTF-8\r\n\r\n";
 
+        private final static String RES_HEADER3 = "HTTP/1.1 200 OK\r\n"
+            + "Date: Sat, 19 Jan 2019 02:49:15 GMT\r\n"
+            + "Server: Apache/2.4.10 (Debian)\r\n"
+            + "Content-Type: text/javascript; charset=UTF-8\r\n"
+            + "Vary: Accept-Encoding\r\n"
+            + "Content-Length: 116\r\n"
+            + "Connection: close\r\n"
+            + "\r\n";
+        
 
+        private final static String RES_HEADER4 = "HTTP/1.1 200 OK\r\n"
+            + "Date: Sat, 19 Jan 2019 02:49:15 GMT\r\n"
+            + "Server: Apache/2.4.10 (Debian)\r\n"
+            + "Content-Type: application/javascript; charset=UTF-8\r\n"
+            + "Vary: Accept-Encoding\r\n"
+            + "Content-Length: 116\r\n"
+            + "Connection: close\r\n"
+            + "\r\n";
+        
     private final static String RES_BODY1 = "<!DOCTYPE html>"
             + "<html lang=\"ja\">"
             + "<head>"
@@ -208,14 +226,28 @@ public class HttpResponseTest {
                 HttpResponse instance = HttpResponse.parseHttpResponse(RES_HEADER1);
                 String expResult = null;
                 String result = instance.getContentMimeType();
-                assertEquals(expResult, result);            
+                assertEquals(expResult, result);
             }
             {
                 HttpResponse instance = HttpResponse.parseHttpResponse(RES_HEADER2);
                 String expResult = "text/html";
                 String result = instance.getContentMimeType();
-                assertEquals(expResult, result);            
+                assertEquals(expResult, result);
             }            
+            {
+                HttpResponse instance = HttpResponse.parseHttpResponse(RES_HEADER3);
+                String expResult = "text/javascript";
+                String result = instance.getContentMimeType();
+                assertEquals(expResult, result);
+                assertTrue(instance.isContentMimeType(HttpMessage.ContentType.JAVA_SCRIPT));
+            }            
+            {
+                HttpResponse instance = HttpResponse.parseHttpResponse(RES_HEADER4);
+                String expResult = "application/javascript";
+                String result = instance.getContentMimeType();
+                assertEquals(expResult, result);
+                assertTrue(instance.isContentMimeType(HttpMessage.ContentType.JAVA_SCRIPT));
+            }
         } catch (ParseException ex) {
             fail("getGuessCharset");
         }
@@ -244,7 +276,5 @@ public class HttpResponseTest {
             fail("getGuessCharset");
         }
     }
-
-
     
 }

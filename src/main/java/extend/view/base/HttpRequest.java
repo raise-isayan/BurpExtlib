@@ -193,12 +193,7 @@ public class HttpRequest extends HttpMessage implements HttpRequestLine {
     }
 
     public String getEnctype() {
-        String contentType = this.getHeader("Content-Type");
-        String encType = contentType;
-        if (contentType != null && contentType.indexOf(';') > 0) {
-            encType = contentType.substring(0, contentType.indexOf(';'));
-        }
-        return encType;
+        return this.getContentType();
     }
 
     public boolean isGET() {

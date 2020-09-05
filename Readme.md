@@ -20,6 +20,6 @@ Please import BurpExtlib.jar in the release folder as a Java library and use it.
 
 # development environment
 
-* NetBean 11.0 (https://netbeans.apache.org/)
+* NetBean 12.0 (https://netbeans.apache.org/)
 * Meven 3.6.1 (https://maven.apache.org/)
 

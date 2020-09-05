@@ -50,6 +50,39 @@ public class HttpResponse extends HttpMessage implements HttpStatusLine {
     private final Pattern RESMETA_SET = Pattern.compile("<meta (?:.*?)charset=[\"\']?([\\w_-]+)[\"\']?\\W+", Pattern.CASE_INSENSITIVE);
     //<META http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
 
+    public String getContentMimeType() {
+        return this.getContentType();
+    }
+
+    public boolean isContentMimeType(String mime) {
+        String mimeType = this.getContentType();
+        if (mimeType != null) {
+            return mimeType.contains(mime);
+        } else {
+            return false;
+        }
+    }
+
+    public boolean isContentMimeType(ContentType contentType) {
+        String mimeType = this.getContentType();
+        if (mimeType == null) {
+            return false;
+        }        
+        boolean result = false;
+        switch (contentType) {
+            case JAVA_SCRIPT:
+                result = mimeType.equalsIgnoreCase("text/javascript") || mimeType.equalsIgnoreCase("application/javascript") || mimeType.equalsIgnoreCase("application/x-javascript");
+                break;
+            case JSON:
+                result = mimeType.equalsIgnoreCase("application/json") || mimeType.equalsIgnoreCase("application/javascript");
+                break;
+            case XML:
+                result = mimeType.equalsIgnoreCase("application/xml") && mimeType.equalsIgnoreCase("application/javascript") || mimeType.equalsIgnoreCase("text/xml");
+                break;
+        }
+        return result;
+    }
+        
     @Override
     public String getGuessCharset() {
         String charset = super.getGuessCharset();

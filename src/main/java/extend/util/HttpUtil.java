@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
 import java.net.Proxy;
 import java.net.ProxySelector;
@@ -24,7 +23,6 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.AbstractMap;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -68,7 +66,7 @@ public final class HttpUtil {
         }
         return contentType;
     }
-
+        
     public static boolean isUrlEencoded(String header) {
         return (header == null || header.equals("application/x-www-form-urlencoded"));
     }
@@ -397,7 +395,8 @@ public final class HttpUtil {
     }
 
     /**
-     * 文字コードを判別する 以下の移植 http://dobon.net/vb/dotnet/string/detectcode.html
+     * 文字コードを判別する 
+     * 以下の移植 http://dobon.net/vb/dotnet/string/detectcode.html
      *
      * @param bytes 文字コードを調べるデータ
      * @return 適当と思われるEncoding、判断できなかった時はnull

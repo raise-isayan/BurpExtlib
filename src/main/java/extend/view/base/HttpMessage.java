@@ -11,7 +11,8 @@ import java.util.regex.Pattern;
  * @author isayan
  */
 public class HttpMessage {
-
+   public enum ContentType { JAVA_SCRIPT, JSON, XML };
+    
     public final static String LINE_TERMINATE = "\r\n";
     private final Pattern CONTENT_LENGTH = Pattern.compile("^(Content-Length:\\s*)(\\d+)$", Pattern.MULTILINE);
     private final Pattern CONTENT_TYPE = Pattern.compile("^Content-Type:\\s*([^;]+)(?:;\\s*charset=[\"\']?([\\w_-]+)[\"\']?)?\\s*$", Pattern.MULTILINE);
@@ -40,14 +41,14 @@ public class HttpMessage {
     public String[] getHeaders() {
         return this.header.split(LINE_TERMINATE);
     }
-
+        
     /**
      * @return the header
      */
     public byte[] getHeaderBytes() {
         return Util.encodeMessage(this.header);
     }
-
+       
     /**
      * @param header the header to set
      */
@@ -133,7 +134,7 @@ public class HttpMessage {
         }
         return httpMsg;
     }
-
+        
     public int getContentLength() {
         int contentlen = -1;
         Matcher m = CONTENT_LENGTH.matcher(this.getHeader());
@@ -168,16 +169,7 @@ public class HttpMessage {
         this.setHeader(buff.toString());
     }
 
-    public boolean isContentMimeType(String mime) {
-        String mimeType = this.getContentMimeType();
-        if (mimeType != null) {
-            return mimeType.contains(mime);
-        } else {
-            return false;
-        }
-    }
-
-    public String getContentMimeType() {
+    public String getContentType() {
         String mimeType = null;
         Matcher m = CONTENT_TYPE.matcher(this.getHeader());
         if (m.find()) {
@@ -185,7 +177,7 @@ public class HttpMessage {
         }
         return mimeType;
     }
-
+       
     public String getGuessCharset() {
         String charset = null;
         Matcher m = CONTENT_TYPE.matcher(this.getHeader());
