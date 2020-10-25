@@ -259,9 +259,9 @@ public final class HttpUtil {
         }
         if (uniqe) {
             List<String> uniqList = Util.toUniqList(list);
-            return (String[]) uniqList.toArray(new String[0]);
+            return uniqList.toArray(new String[uniqList.size()]);
         } else {
-            return list.toArray(new String[0]);
+            return list.toArray(new String[list.size()]);
         }
     }
 

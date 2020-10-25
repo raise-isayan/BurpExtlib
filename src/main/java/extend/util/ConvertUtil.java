@@ -49,13 +49,11 @@ public final class ConvertUtil {
         return sb.toString();
     }
     
-    public static String toBase64Encode(String src, Charset charset)
-            throws UnsupportedEncodingException {
+    public static String toBase64Encode(String src, Charset charset) {
         return toBase64Encode(src, charset, true);
     }
 
-    public static String toBase64Encode(String src, Charset charset, boolean padding)
-            throws UnsupportedEncodingException {
+    public static String toBase64Encode(String src, Charset charset, boolean padding) {
         if (padding) {
             byte bytes[] = Base64.getEncoder().encode(src.getBytes(charset));
             return Util.getRawStr(bytes);
@@ -96,8 +94,7 @@ public final class ConvertUtil {
         }
     }
 
-    public static String toBase64Decode(String str, Charset charset)
-            throws UnsupportedEncodingException {
+    public static String toBase64Decode(String str, Charset charset) {
         byte bytes[] = Base64.getDecoder().decode(str);
         return new String(bytes, charset);
     }
@@ -112,8 +109,7 @@ public final class ConvertUtil {
         return Base64.getDecoder().decode(str);
     }
 
-    public static String toBase64URLSafeEncode(String src, Charset charset)
-            throws UnsupportedEncodingException {
+    public static String toBase64URLSafeEncode(String src, Charset charset) {
         byte bytes[] = Base64.getUrlEncoder().withoutPadding().encode(src.getBytes(charset));
         return Util.getRawStr(bytes);
     }
@@ -129,8 +125,7 @@ public final class ConvertUtil {
         return Util.getRawStr(bytes);
     }
 
-    public static String toBase64URLSafeDecode(String str, Charset charset)
-            throws UnsupportedEncodingException {
+    public static String toBase64URLSafeDecode(String str, Charset charset) {
         byte bytes[] = Base64.getUrlDecoder().decode(str);
         return new String(bytes, charset);
     }
