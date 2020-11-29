@@ -228,8 +228,12 @@ public final class ConvertUtil {
     }
 
     public static byte[] compressZlib(byte[] content) {
+        return compressZlib(content, false);
+    }
+
+    public static byte[] compressZlib(byte[] content, boolean nowrap) {
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
-        Deflater compresser = new Deflater(Deflater.BEST_COMPRESSION, true);
+        Deflater compresser = new Deflater(Deflater.BEST_COMPRESSION, nowrap);
         try {
             compresser.setInput(content);
             compresser.finish();
@@ -244,7 +248,7 @@ public final class ConvertUtil {
         }
         return bout.toByteArray();
     }
-
+    
     public static String compressZlibBase64(String content, Charset charset) {
         return toBase64Encode(compressZlib(Util.encodeMessage(content, charset)), true);
     }
@@ -269,8 +273,12 @@ public final class ConvertUtil {
     }
 
     public static byte[] decompressZlib(byte[] content) {
+        return decompressZlib(content, false);
+    }
+
+    public static byte[] decompressZlib(byte[] content, boolean nowrap) {
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
-        Inflater decompresser = new Inflater(true);
+        Inflater decompresser = new Inflater(nowrap);
         try {
             decompresser.setInput(content);
             byte[] buf = new byte[1024];
@@ -290,7 +298,8 @@ public final class ConvertUtil {
         }
         return bout.toByteArray();
     }
-
+    
+    
     public static String decompressZlibBase64(String content, Charset charset) {
         return Util.decodeMessage(decompressZlib(toBase64Decode(content)), charset);
     }
