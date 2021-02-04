@@ -126,7 +126,10 @@ public class CustomTableModel extends DefaultTableModel {
                     buffer.append("\t");
                 }
                 if (visible && table.getColumnModel().getColumn(colsSelected[j]).getPreferredWidth() > 0) {
-                    buffer.append(table.getValueAt(rowsSelected[i], colsSelected[j]));
+                    Object value = table.getValueAt(rowsSelected[i], colsSelected[j]);
+                    if (value != null) {
+                        buffer.append(value);
+                    }
                     cnt++;                
                 }
             }

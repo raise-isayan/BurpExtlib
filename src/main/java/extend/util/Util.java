@@ -524,6 +524,10 @@ public final class Util {
         return bostm.toByteArray();
     }
 
+    public static boolean isNullOrEmpty(String value) {
+        return !(value != null && !"".equals(value));
+    }    
+	
     private final static char[] NUM_CHARS = "1234567890".toCharArray();
     private final static char[] IDENT_CHARS
             = "_1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
