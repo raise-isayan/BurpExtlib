@@ -5,7 +5,6 @@ package extend.util;
  * @author isayan
  */
 public class CustomVersion {
-
     private static int MAJOR_VERSION = 0;
     private static int MINOR_VERSION = 0;
     private static int REVISION_VERSION = 0;

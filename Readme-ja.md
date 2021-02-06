@@ -18,8 +18,11 @@ release フォルダの BurpExtlib.jar をJavaのライブラリとしてイン�
 # 対応バージョン
 * Burp suite v2.1
 
+# ビルド
+ gradlew release
+
 # 開発環境
 
-* NetBean 12.0 (https://netbeans.apache.org/)
-* Meven 3.6.1 (https://maven.apache.org/)
+* NetBean 12.2 (https://netbeans.apache.org/)
+* Gradle 6.8.1 (https://gradle.org/)
 

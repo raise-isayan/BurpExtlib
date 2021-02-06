@@ -18,8 +18,11 @@ Please import BurpExtlib.jar in the release folder as a Java library and use it.
 # Supported Versions
 * Burp suite v2.1
 
+# build
+ gradlew release
+
 # development environment
 
-* NetBean 12.0 (https://netbeans.apache.org/)
-* Meven 3.6.1 (https://maven.apache.org/)
+* NetBean 12.2 (https://netbeans.apache.org/)
+* Gradle 6.8.1 (https://gradle.org/)
 
