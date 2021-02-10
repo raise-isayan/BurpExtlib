@@ -124,11 +124,12 @@ public final class HttpUtil {
         out.write(Util.getRawByte("Content-Disposition: form-data; name=\"" + name + "\"" + LINE_TERMINATE));
         if (charset == null) {
             out.write(Util.getRawByte("Content-Type: text/plain;" + LINE_TERMINATE + LINE_TERMINATE));
+            out.write(Util.getRawByte(text));
         }
         else {
             out.write(Util.getRawByte("Content-Type: text/plain; charset=" + charset.displayName() + LINE_TERMINATE + LINE_TERMINATE));        
+            out.write(Util.encodeMessage(text, charset));
         }
-        out.write(Util.getRawByte(text));
         out.write(Util.getRawByte(LINE_TERMINATE));
     }
 
