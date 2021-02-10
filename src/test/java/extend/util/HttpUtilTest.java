@@ -176,13 +176,42 @@ public class HttpUtilTest {
     public void testMultipart() {
         try {
             String boundary = HttpUtil.generateBoundary();
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            HttpUtil.outMultipartText(boundary, out, "host", "www.exmple.com");
-            HttpUtil.outMultipartText(boundary, out, "port", Util.toString(8080));
-            HttpUtil.outMultipartText(boundary, out, "protocol", "https");
-            HttpUtil.outMultipartText(boundary, out, "url", "https://www.example.com/");
-            HttpUtil.outMultipartText(boundary, out, "comment", "コメント", StandardCharsets.UTF_8);
-            System.out.println(new String(out.toByteArray(), StandardCharsets.ISO_8859_1));
+            {
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                HttpUtil.outMultipartText(boundary, out, "host", "www.exmple.com");
+                String result = new String(out.toByteArray(), StandardCharsets.UTF_8);
+                assertTrue(result.contains("www.exmple.com"));
+            }
+            {
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                HttpUtil.outMultipartText(boundary, out, "port", Util.toString(8080));
+                String result = new String(out.toByteArray(), StandardCharsets.UTF_8);
+                assertTrue(result.contains("8080"));
+            }
+            {
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                HttpUtil.outMultipartText(boundary, out, "protocol", "https");
+                String result = new String(out.toByteArray(), StandardCharsets.UTF_8);
+                assertTrue(result.contains("https"));
+            }
+            {
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                HttpUtil.outMultipartText(boundary, out, "url", "https://www.example.com/");
+                String result = new String(out.toByteArray(), StandardCharsets.UTF_8);
+                assertTrue(result.contains("https://www.example.com/"));
+            }
+            {
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                HttpUtil.outMultipartText(boundary, out, "comment", "コメント", StandardCharsets.UTF_8);
+                String result = new String(out.toByteArray(), StandardCharsets.UTF_8);
+                assertTrue(result.contains("コメント"));
+            }
+            {
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                HttpUtil.outMultipartText(boundary, out, "comment", "コメント");
+                String result = new String(out.toByteArray(), StandardCharsets.UTF_8);
+                assertFalse(result.contains("コメント"));
+            }
         } catch (IOException ex) {
             Logger.getLogger(HttpUtilTest.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -196,16 +225,13 @@ public class HttpUtilTest {
     @Test
     public void testNormalizeCharset() {
         System.out.println("testNormalizeCharset");
-        System.out.println(HttpUtil.normalizeCharset("Shift_JIS")); 
-        System.out.println(HttpUtil.normalizeCharset("Shift-JIS")); 
-        System.out.println(HttpUtil.normalizeCharset("shift_jis")); 
-        System.out.println(HttpUtil.normalizeCharset("Windows-31J")); 
-        System.out.println(HttpUtil.normalizeCharset("MS932")); 
-        System.out.println(HttpUtil.normalizeCharset(Util.DEFAULT_ENCODING)); 
-        System.out.println(HttpUtil.normalizeCharset(null)); 
-
-        System.out.println(Util.DEFAULT_ENCODING); 
-                
+        assertEquals("Shift_JIS", HttpUtil.normalizeCharset("Shift_JIS"));
+        assertEquals("Shift_JIS", HttpUtil.normalizeCharset("Shift-JIS"));
+        assertEquals("Shift_JIS", HttpUtil.normalizeCharset("shift_jis"));
+        assertEquals("windows-31j", HttpUtil.normalizeCharset("Windows-31J"));
+        assertEquals("windows-31j", HttpUtil.normalizeCharset("MS932"));
+        assertEquals(Util.DEFAULT_ENCODING, HttpUtil.normalizeCharset(Util.DEFAULT_ENCODING));
+        assertEquals(null, HttpUtil.normalizeCharset(null));
     }
 
     /**

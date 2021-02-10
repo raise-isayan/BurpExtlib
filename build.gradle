@@ -21,8 +21,8 @@ jar {
     from {
         configurations.runtimeClasspath.filter{ it.exists() }.collect { it.isDirectory() ? it : zipTree(it) }
     }
-    destinationDir = file("release")
-    version =  "v${release_version_major}.${release_version_minor}"
+    destinationDirectory = file('release')
+    archiveVersion =  "v${release_version_major}.${release_version_minor}"
 }
 
 task release(type: Zip, dependsOn: ['build']) {
