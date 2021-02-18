@@ -3,56 +3,65 @@ package extend.util;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CharsetEncoder;
+import java.util.Arrays;
+import java.util.List;
 
+/**
+ * base code https://sourceforge.net/projects/jutf7/
+ */
 public class UTF7Charset extends Charset {
+    private static final String SET_D = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'(),-./:?";
+    private static final String SET_O = "!\"#$%&*;<=>@[]^_`{|}";
+    private static final String RULE_3 = " \t\r\n";
+    final String directlyEncoded;
 
-    static final int MAX_UTF7_CHAR_VALUE = 0x7f;
-    static final char BEGIN_SHIFT = '+';
-    static final char END_SHIFT = '-';
-    static final byte[] BASE_64 = {
-        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', // 0
-        'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', // 1
-        'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', // 2
-        'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', // 3
-        'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', // 4
-        'o', 'p', 'q', 'r', 's', 't', 'u', 'v', // 5
-        'w', 'x', 'y', 'z', '0', '1', '2', '3', // 6
-        '4', '5', '6', '7', '8', '9', '+', '/' // 7
-    };
-    protected static final byte INVERSE_BASE_64[] = new byte[128];
-    protected static final byte NON_BASE_64 = -1;
-    protected static final boolean NO_SHIFT_REQUIRED[] = new boolean[128];
+    private static final List CONTAINED = Arrays.asList(new String[]{"US-ASCII", "ISO-8859-1",
+        "UTF-8", "UTF-16", "UTF-16LE", "UTF-16BE"});
+    final boolean strict;
 
-    static {
-        for (int i = 0; i < INVERSE_BASE_64.length; i++) {
-            INVERSE_BASE_64[i] = NON_BASE_64;
-        }
-        for (byte i = 0; i < BASE_64.length; i++) {
-            INVERSE_BASE_64[BASE_64[i]] = i;
-        }
-
-        final String unshifted = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'(),-./:? \t\r\n";
-        for (int i = 0; i < unshifted.length(); i++) {
-            NO_SHIFT_REQUIRED[unshifted.charAt(i)] = true;
+    UTF7Charset(String name, String[] aliases, boolean includeOptional) {
+        super(name, aliases);
+        this.strict = false;
+        if (includeOptional) {
+            this.directlyEncoded = SET_D + SET_O + RULE_3;
+        } else {
+            this.directlyEncoded = SET_D + RULE_3;
         }
     }
 
-    public UTF7Charset(String canonicalName, String[] aliases) {
-        super(canonicalName, aliases);
+    /* (non-Javadoc)
+	 * @see java.nio.charset.Charset#contains(java.nio.charset.Charset)
+     */
+    public boolean contains(final Charset cs) {
+        return CONTAINED.contains(cs.name());
     }
 
-    @Override
-    public boolean contains(Charset cs) {
-        return true;
-    }
-
-    @Override
+    /* (non-Javadoc)
+	 * @see java.nio.charset.Charset#newDecoder()
+     */
     public CharsetDecoder newDecoder() {
         return new UTF7Decoder(this);
     }
 
-    @Override
+    /* (non-Javadoc)
+	 * @see java.nio.charset.Charset#newEncoder()
+     */
     public CharsetEncoder newEncoder() {
         return new UTF7Encoder(this);
     }
+
+    /**
+     * Tells if a character can be encoded using simple (US-ASCII) encoding or
+     * requires base 64 encoding.
+     *
+     * @param ch The character
+     * @return True if the character can be encoded directly, false otherwise
+     */
+    boolean canEncodeDirectly(char ch) {
+        return directlyEncoded.indexOf(ch) >= 0;
+    }
+
+    public static final char BEGIN_SHIFT = '+';
+    public static final char END_SHIFT = '-';
+
 }

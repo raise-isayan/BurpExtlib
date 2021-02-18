@@ -12,7 +12,7 @@ import java.awt.LayoutManager;
  */
 public class VerticalFlowLayout implements LayoutManager {
 
-    private int vgap = 0;
+    private final int vgap;
 
     /**
      * 新しい<code>VerticalFlowLayout</code>の構築をおこないます
@@ -60,15 +60,14 @@ public class VerticalFlowLayout implements LayoutManager {
         if (numComponents == 0) {
             return;
         }
-        int y = insets.top;
         int x = insets.left;
+        int y = insets.top;
 
         for (int i = 0; i < numComponents; ++i) {
             Component c = parent.getComponent(i);
 
             if (c.isVisible()) {
                 Dimension d = c.getPreferredSize();
-
                 c.setBounds(x, y, w, d.height);
                 y += d.height + vgap;
             }
@@ -120,10 +119,8 @@ public class VerticalFlowLayout implements LayoutManager {
 
         for (int i = 0; i < numComponents; ++i) {
             Component c = parent.getComponent(i);
-
             if (c.isVisible()) {
                 Dimension cd = c.getPreferredSize();
-
                 maxWidth = Math.max(maxWidth, cd.width);
                 totalHeight += cd.height;
             }
