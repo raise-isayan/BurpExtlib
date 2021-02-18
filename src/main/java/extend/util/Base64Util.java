@@ -5,7 +5,7 @@ import java.util.Arrays;
 /**
  * base code https://sourceforge.net/projects/jutf7/
  */
-public class Base64Util {
+class Base64Util {
 
     private static final String BASE64_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
             + "abcdefghijklmnopqrstuvwxyz" + "0123456789+/";
@@ -14,7 +14,7 @@ public class Base64Util {
     private final char[] alphabet;
     private final int[] inverseAlphabet;
 
-    public Base64Util() {
+    Base64Util() {
         this(BASE64_ALPHABET);
     }
 
